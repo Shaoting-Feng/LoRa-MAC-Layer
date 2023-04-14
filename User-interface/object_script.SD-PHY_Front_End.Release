@@ -1,0 +1,17 @@
+INPUT(
+./release\main.o
+./release\dialog.o
+./release\domain6.o
+./release\domain10.o
+./release\domain11.o
+./release\domain12.o
+./release\domain13.o
+./release\domain14.o
+./release\moc_dialog.o
+./release\moc_domain6.o
+./release\moc_domain10.o
+./release\moc_domain11.o
+./release\moc_domain12.o
+./release\moc_domain13.o
+./release\moc_domain14.o
+);

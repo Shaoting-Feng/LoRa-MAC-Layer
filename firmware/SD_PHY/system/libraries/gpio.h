@@ -133,7 +133,7 @@ typedef struct {
 } Gpio_t;
 
 // added by Shaoting
-uint8_t ACK_buffer[6];
+uint8_t ACK_buffer[1];
 
 /* GPIO IRQ handler function prototype */
 typedef void( GpioIrqHandler )( void );

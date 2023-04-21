@@ -50,7 +50,7 @@ RadioEvents_t sx1276 =
 extern uint8_t BR_buffer[200];
 extern uint8_t transmit_cnt;
 // added by ZY
-static uint8_t ACK_buffer[6];
+static uint8_t ACK_buffer[1];
 uint8_t packet_size = 0;
 
 void task_lora_test(void)
@@ -140,7 +140,7 @@ void task_lora_test(void)
 
 //              sx1276Radio.Rx(RX_TIMEOUT_VALUE);
                 MCU_State = MCU_STATE_BR_TX_WAIT;
-                SX1276Send( BR_buffer, 15 );
+                SX1276Send( BR_buffer, 16 );
 // added by ZY
                 settimer();
 //                GpioToggle(&SD_PHY.LED_D1);
@@ -168,7 +168,7 @@ void task_lora_test(void)
 
         case MCU_STATE_BR_TX:
             {
-                uart_write("Correctly transmitted!\n");
+//                uart_write("Correctly transmitted!\n");
 //
                 MCU_State = MCU_STATE_UART_WAIT;
                 break;
@@ -191,14 +191,10 @@ void task_lora_test(void)
 
                 SX1276Write(RegFifoAddrPtr, SX1276Read(RegFifoRxCurrentAddr));
                 packet_size = SX1276ReceivePayload(ACK_buffer);
-                uart_printNum(irqFlags);
-                uart_write("ACK package: ");
-                uart_printNum(ACK_buffer[0]);
-                uart_printNum(ACK_buffer[1]);
-                uart_printNum(ACK_buffer[2]);
-                uart_printNum(ACK_buffer[3]);
-                uart_printNum(ACK_buffer[4]);
-                uart_write("\n");
+                if (ACK_buffer[0] != 0xf0)
+                {
+                    uart_write("Device found.\n");
+                }
                 MCU_State = MCU_STATE_BR_TX;
                 break;
             }

@@ -37,19 +37,27 @@ void settimer(void)
 #pragma vector=TIMER0_A0_VECTOR
 __interrupt void TIMER0_A0_ISR (void)
 {
-    static uint8_t TimerCnt = 0;
+    static uint16_t TimerCnt = 0;
+    static uint16_t TransmitCnt = 0;
 
     if (timerstart == 1) {  
         TimerCnt ++;
-        if (TimerCnt >= 100) {
+        if (TimerCnt >= 1000) {
             TimerCnt = 0;
             //timeout_flag = 1;
 
             // added by Shaoting
-            if (MCU_State == MCU_STATE_BR_RX_WAIT) {
-                uart_write("Time Out!\n");
+            if (TransmitCnt < 10){
+                if (MCU_State == MCU_STATE_BR_RX_WAIT) {
+                    uart_write("Time Out!\n");
+                    TransmitCnt ++;
+                    MCU_State = MCU_STATE_BR_TX_INIT;
+                }
+            }
+            else {
+                TransmitCnt = 0;
                 MCU_State = MCU_STATE_BR_TX_INIT;
-            }  
+            }
             timerstart = 0; 
         }
     }

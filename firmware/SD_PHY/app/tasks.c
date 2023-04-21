@@ -54,6 +54,7 @@ static uint8_t BR_buffer[RFLR_PAYLOADMAXLENGTH];
 // added by Shaoting
 extern uint8_t ACK_buffer[1];
 extern uint8_t transmit_cnt_2;
+bool sleep_flag;
 
 void task_lora_test(void)
 {
@@ -100,6 +101,9 @@ void task_lora_test(void)
     uint8_t irqFlags;
 
     uart_write("Everything is ready!\n");
+
+    // added by Shaoting
+    sleep_flag = false;
 
     while(1)
     {
@@ -205,12 +209,12 @@ void task_lora_test(void)
 
                             ACK_Configure(1);
                         }
-                        else if (BR_buffer[0] == 0xff) { // go to sleep
+                        else if (BR_buffer[0] == 0x20) { // go to sleep
                             ACK_Configure(0);
-                            SetSwitchMode(SDPHY_MODE);
-                            // __bis_SR_register(LPM0_bits);
+                            sleep_flag = true;
 
-                            // remain to determine how to go to sleep
+                            // deleted by Shaoting
+                            // SetSwitchMode(SDPHY_MODE);
                         }
                         else if (BR_buffer[0] == 0x28) { // broadcast
                             ACK_Configure(2);
@@ -269,6 +273,7 @@ void task_lora_test(void)
         case MCU_STATE_BR_TX_2:
             {
                 uart_write("Sent the ACK package!\n");
+                if (sleep_flag) __bis_SR_register(LPM4_bits);
                 MCU_State = MCU_STATE_BR_RX_INIT;
                 break;
             }

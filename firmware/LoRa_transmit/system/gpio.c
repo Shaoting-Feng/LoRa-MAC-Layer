@@ -132,7 +132,7 @@ __interrupt void UART_Receive_ISR(void) {
     if(EUSCI_A_UART_getInterruptStatus(EUSCI_A0_BASE, EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG)) {
         EUSCI_A_UART_clearInterrupt(EUSCI_A0_BASE, EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG);
         BR_buffer[transmit_cnt++] = UCA0RXBUF;
-        if (transmit_cnt == 15) {
+        if (transmit_cnt == 16) {
             GpioToggle(&SD_PHY.LED_D2);
             transmit_cnt = 0;
             if (MCU_State == MCU_STATE_UART_WAIT)

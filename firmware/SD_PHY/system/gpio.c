@@ -3,6 +3,9 @@
 #include <libraries/board.h>
 #include <libraries/gpio.h>
 
+// added by Shaoting
+#include <libraries/timer.h>
+
 
 /**########################Variables and Types############################**/
 //static GpioIrqHandler* Irq_P1[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
@@ -97,6 +100,9 @@ __interrupt void PORT4_IRQHandler(void)
     {
         if (MCU_State == MCU_STATE_BR_RX_WAIT)
         {
+            // added by Shaoting
+            endtimer();
+
             MCU_State = MCU_STATE_BR_RX;
             GpioToggle(&SD_PHY.LED_D2);
         }

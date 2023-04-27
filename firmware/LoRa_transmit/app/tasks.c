@@ -50,7 +50,10 @@ RadioEvents_t sx1276 =
 extern uint8_t BR_buffer[200];
 extern uint8_t transmit_cnt;
 // added by ZY
-static uint8_t ACK_buffer[1];
+uint8_t ACK_buffer[1];
+int bc_cnt = 1;
+uint8_t Temp_buffer = 0x08;
+bool flag_bc = 0;
 uint8_t packet_size = 0;
 
 void task_lora_test(void)
@@ -140,6 +143,29 @@ void task_lora_test(void)
 
 //              sx1276Radio.Rx(RX_TIMEOUT_VALUE);
                 MCU_State = MCU_STATE_BR_TX_WAIT;
+// added by ZY
+                if ((int)BR_buffer[0] % 8 == 0 && ((int)BR_buffer[0] / 8) % 2 == 1)     //判断是否为广播
+                {
+                    flag_bc = 1;
+                }
+
+                if (bc_cnt == 17)
+                {
+                    bc_cnt = 1;
+                    flag_bc = 0;
+                    Temp_buffer = 0x08;
+                }
+                if (flag_bc == 1)
+                {
+                    BR_buffer[0] = Temp_buffer;
+                    /*
+                    if (TransmitCnt == 10)
+                    {
+                        Temp_buffer = Temp_buffer + 0x10;
+                        bc_cnt++;
+                    }*/
+                }
+                
                 SX1276Send( BR_buffer, 16 );
 // added by ZY
                 settimer();

@@ -39,6 +39,8 @@ __interrupt void TIMER0_A0_ISR (void)
 {
     static uint16_t TimerCnt = 0;
     static uint16_t TransmitCnt = 0;
+    // added by ZY
+    int maxium = 10;
 
     if (timerstart == 1) {  
         TimerCnt ++;
@@ -46,8 +48,15 @@ __interrupt void TIMER0_A0_ISR (void)
             TimerCnt = 0;
             //timeout_flag = 1;
 
+            // added by ZY
+            if (flag_bc == 1)
+            {
+                maxium = 160;
+            }
+            
+
             // added by Shaoting
-            if (TransmitCnt < 10){
+            if (TransmitCnt < maxium){
                 if (MCU_State == MCU_STATE_BR_RX_WAIT) {
                     uart_write("Time Out!\n");
                     TransmitCnt ++;

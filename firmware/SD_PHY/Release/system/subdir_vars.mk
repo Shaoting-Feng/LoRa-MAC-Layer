@@ -11,6 +11,7 @@ C_SRCS += \
 ../system/clock.c \
 ../system/gpio.c \
 ../system/spi.c \
+../system/timer.c \
 ../system/uart.c 
 
 C_DEPS += \
@@ -19,6 +20,7 @@ C_DEPS += \
 ./system/clock.d \
 ./system/gpio.d \
 ./system/spi.d \
+./system/timer.d \
 ./system/uart.d 
 
 OBJS += \
@@ -27,6 +29,7 @@ OBJS += \
 ./system/clock.obj \
 ./system/gpio.obj \
 ./system/spi.obj \
+./system/timer.obj \
 ./system/uart.obj 
 
 OBJS__QUOTED += \
@@ -35,6 +38,7 @@ OBJS__QUOTED += \
 "system\clock.obj" \
 "system\gpio.obj" \
 "system\spi.obj" \
+"system\timer.obj" \
 "system\uart.obj" 
 
 C_DEPS__QUOTED += \
@@ -43,6 +47,7 @@ C_DEPS__QUOTED += \
 "system\clock.d" \
 "system\gpio.d" \
 "system\spi.d" \
+"system\timer.d" \
 "system\uart.d" 
 
 C_SRCS__QUOTED += \
@@ -51,6 +56,7 @@ C_SRCS__QUOTED += \
 "../system/clock.c" \
 "../system/gpio.c" \
 "../system/spi.c" \
+"../system/timer.c" \
 "../system/uart.c" 
 
 

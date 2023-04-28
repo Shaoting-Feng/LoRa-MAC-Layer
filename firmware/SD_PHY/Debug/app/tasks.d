@@ -79,6 +79,7 @@ app/tasks.obj: D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/driverlib/MSP430F
 app/tasks.obj: D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/app/task.h
 app/tasks.obj: D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/app/ota/ota.h
 app/tasks.obj: D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/system/libraries/ack.h
+app/tasks.obj: D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/system/libraries/timer.h
 
 ../app/tasks.c: 
 D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/system/libraries/board.h: 
@@ -159,3 +160,4 @@ D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/driverlib/MSP430FR5xx_6xx/driver
 D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/app/task.h: 
 D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/app/ota/ota.h: 
 D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/system/libraries/ack.h: 
+D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/system/libraries/timer.h: 

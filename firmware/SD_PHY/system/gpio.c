@@ -3,6 +3,9 @@
 #include <libraries/board.h>
 #include <libraries/gpio.h>
 
+// added by Shaoting
+#include <libraries/timer.h>
+
 
 /**########################Variables and Types############################**/
 //static GpioIrqHandler* Irq_P1[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
@@ -14,7 +17,7 @@ static uint8_t lora_irq_mask = 0x08;
 uint32_t port6_irq_status;
 
 // added by Shaoting
-// 用于在接收端发送ACK
+// 鐢ㄤ簬鍦ㄦ帴鏀剁鍙戦�丄CK
 uint8_t transmit_cnt_2 = 0;
 
 /**########################Functions############################**/
@@ -93,10 +96,14 @@ __interrupt void PORT4_IRQHandler(void)
 
 
     if (port4_irq_status & lora_irq_mask)
-    // 发现发和收查interrupt的前两行是一样的
+    // 鍙戠幇鍙戝拰鏀舵煡interrupt鐨勫墠涓よ鏄竴鏍风殑
     {
         if (MCU_State == MCU_STATE_BR_RX_WAIT)
         {
+            // added by Shaoting
+            __bic_SR_register_on_exit(LPM4_bits);
+            endtimer();
+
             MCU_State = MCU_STATE_BR_RX;
             GpioToggle(&SD_PHY.LED_D2);
         }

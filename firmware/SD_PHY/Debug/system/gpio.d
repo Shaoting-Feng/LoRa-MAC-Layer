@@ -71,6 +71,7 @@ system/gpio.obj: D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/driverlib/MSP43
 system/gpio.obj: D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/utils/utils.h
 system/gpio.obj: D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/sx1276/sx1276RegsFsk.h
 system/gpio.obj: D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/sx1276/sx1276RegsLoRa.h
+system/gpio.obj: D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/system/libraries/timer.h
 
 ../system/gpio.c: 
 D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/system/libraries/board.h: 
@@ -143,3 +144,4 @@ D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/driverlib/MSP430FR5xx_6xx/driver
 D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/utils/utils.h: 
 D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/sx1276/sx1276RegsFsk.h: 
 D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/sx1276/sx1276RegsLoRa.h: 
+D:/Common_File/Wireless_COM/OTA/firmware/SD_PHY/system/libraries/timer.h: 

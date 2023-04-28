@@ -13,6 +13,9 @@
 #include <sx1276/sx1276.h>
 #include <ota.h>
 
+extern bool sleep_flag;
+extern bool done_flag;
+
 void timerinitial(void)
 {
     Timer_A_initUpModeParam timera = {0};     //upmode
@@ -41,6 +44,14 @@ void settimer(void)
 // added by Shaoting
 void endtimer(void)
 {
+    if (duty_flag) {
+        /*
+        __bic_SR_register_on_exit(LPM4_bits);
+        */
+        uart_write("I have waken up.\n");
+        GpioWrite(&SD_PHY.LED_D1, 1);
+        duty_flag = false;
+    }
     timerstart = 0;
 }
 
@@ -48,6 +59,12 @@ void endtimer(void)
 __interrupt void TIMER0_A0_ISR (void)
 {
     // uart_write("test\n");
+
+    if (timerstart == 1 && sleep_flag && done_flag) {
+        uart_write("Oops.\n");
+        GpioWrite(&SD_PHY.LED_D1, 0);
+        __bis_SR_register(LPM4_bits);
+    }
 
     static uint16_t TimerCnt = 0;
 

@@ -32,3 +32,4 @@ encoding//Release/system/subdir_vars.mk=UTF-8
 encoding//Release/utils/subdir_rules.mk=UTF-8
 encoding//Release/utils/subdir_vars.mk=UTF-8
 encoding//app/tasks.c=UTF-8
+encoding//system/gpio.c=UTF-8

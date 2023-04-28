@@ -56,6 +56,7 @@ static uint8_t BR_buffer[RFLR_PAYLOADMAXLENGTH];
 extern uint8_t ACK_buffer[1];
 extern uint8_t transmit_cnt_2;
 bool sleep_flag;
+bool done_flag;
 
 void task_lora_test(void)
 {
@@ -115,6 +116,7 @@ void task_lora_test(void)
 
     // added by Shaoting
     sleep_flag = false;
+    done_flag = false;
 
     while(1)
     {
@@ -286,9 +288,11 @@ void task_lora_test(void)
             {
                 uart_write("Sent the ACK package!\n");
                 if (sleep_flag) {
+                    done_flag = true;
                     uart_write("I am going to sleep permanently.\n");
                     GpioWrite(&SD_PHY.LED_D1, 0);
                     __bis_SR_register(LPM4_bits);
+                    uart_write("test\n");
                 }
                 MCU_State = MCU_STATE_BR_RX_INIT;
                 break;

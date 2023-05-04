@@ -13,8 +13,13 @@
 #include <sx1276/sx1276.h>
 #include <ota.h>
 
+// added by Shaoting
+#include <stdlib.h>
+#include <time.h>
+
 extern bool sleep_flag;
 extern bool done_flag;
+
 
 void timerinitial(void)
 {
@@ -33,16 +38,23 @@ void timerinitial(void)
     duty_flag = false;
 }
 
-void settimer(void)
+void settimer_sleep(void)
 {
-    timerstart = 1;
+    timerstart_sleep = 1;
 
     // deleted by Shaoting
     // uart_write("Timer Start!\n");
 }
 
 // added by Shaoting
-void endtimer(void)
+void settimer_wait(void)
+{
+    timerstart_wait = 1;
+    srand(time(0));
+    random_num = rand() % 1001; // 0 to 1s
+}
+
+void endtimer_sleep(void)
 {
     if (duty_flag) {
         /*
@@ -52,15 +64,16 @@ void endtimer(void)
         GpioWrite(&SD_PHY.LED_D1, 1);
         duty_flag = false;
     }
-    timerstart = 0;
+    timerstart_sleep = 0;
 }
+
 
 #pragma vector=TIMER0_A0_VECTOR
 __interrupt void TIMER0_A0_ISR (void)
 {
     // uart_write("test\n");
 
-    if (timerstart == 1 && sleep_flag && done_flag) {
+    if (timerstart_sleep == 1 && sleep_flag && done_flag) {
         uart_write("Oops.\n");
         GpioWrite(&SD_PHY.LED_D1, 0);
         __bis_SR_register(LPM4_bits);
@@ -68,7 +81,7 @@ __interrupt void TIMER0_A0_ISR (void)
 
     static uint16_t TimerCnt = 0;
 
-    if (timerstart == 1) {  
+    if (timerstart_sleep == 1) {  
         TimerCnt ++;
         // uart_printNum(TimerCnt);
         if (TimerCnt >= 3000) { // go to sleep after 3s without actions
@@ -80,13 +93,6 @@ __interrupt void TIMER0_A0_ISR (void)
                 GpioWrite(&SD_PHY.LED_D1, 0);
                 duty_flag = true;
                 __bis_SR_register(LPM4_bits + GIE);
-                /*
-                Question: Why can I exit LPM2, LPM3, and LPM4 through this interrupt?
-
-                I originally used LPM0 and LPM1. 
-                When I switched to LPM2, LPM3, and LPM4, the board is supposed to go to sleep permanently. 
-                But it can still use SMCLK in these three modes.
-                */
             }
             else {
                 __bic_SR_register_on_exit(LPM4_bits);
@@ -98,5 +104,26 @@ __interrupt void TIMER0_A0_ISR (void)
     }
     else {
         TimerCnt = 0;
+    }
+
+    // added by Shaoting
+    static uint16_t TimerCnt_wait = 0;
+
+    if (timerstart_wait == 1) {  
+        TimerCnt_wait ++;
+        if (TimerCnt_wait >= random_num) { 
+            TimerCnt_wait = 0;
+            if (MCU_State == MCU_STATE_BR_RX) {
+                uart_write("I have delayed \n");
+                uart_printNum(random_num % 1000);
+                uart_write(" \n");
+                MCU_State = MCU_STATE_BR_TX_INIT_2;
+                TimerCnt_wait = 0;
+                timerstart_wait = 0;
+            }
+        }
+    }
+    else {
+        TimerCnt_wait = 0;
     }
 }

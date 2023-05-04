@@ -102,7 +102,7 @@ __interrupt void PORT4_IRQHandler(void)
         {
             // added by Shaoting
             __bic_SR_register_on_exit(LPM4_bits);
-            endtimer();
+            endtimer_sleep();
 
             MCU_State = MCU_STATE_BR_RX;
             GpioToggle(&SD_PHY.LED_D2);

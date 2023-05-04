@@ -14,6 +14,8 @@
 // added by Shaoting
 #include <libraries/ack.h>
 #include <libraries/timer.h>
+#include <libraries/crc.h>
+#include <libraries/tag.h>
 
 /**########################Variables and Types############################**/
 
@@ -57,6 +59,9 @@ extern uint8_t ACK_buffer[1];
 extern uint8_t transmit_cnt_2;
 bool sleep_flag;
 bool done_flag;
+extern int tag;
+
+uint8_t send_buffer[2];
 
 void task_lora_test(void)
 {
@@ -95,7 +100,7 @@ void task_lora_test(void)
     // deleted by Shaoting
     // uart_printNum(version);
 
-    while(version != 0x12)
+    while (version != 0x12)
     {
 //        GpioWrite(&SD_PHY.LED_D1, true);
         delay_ms(1);
@@ -160,7 +165,7 @@ void task_lora_test(void)
         case MCU_STATE_BR_RX_WAIT:
             {
 //              MAP_PCM_gotoLPM3();
-                settimer();
+                settimer_sleep();
                 break;
             }
         case MCU_STATE_BR_RX:
@@ -180,17 +185,16 @@ void task_lora_test(void)
                     // uart_write("Correctly received!\n");
 
                     // added by Shaoting
-                    uart_write("Correctly received a packet.\n");
+                    uart_write("Received a packet.\n");
 
-                    GpioWrite(&SD_PHY.FPGA.DATA, 0);
-                    uint8_t tmp;
-                    int i,j;
+                    if (crc8_check(BR_buffer, 16)) {
+                        uart_write("CRC checked correctly.\n");
+                        GpioWrite(&SD_PHY.FPGA.DATA, 0);
+                        uint8_t tmp;
+                        int i,j;
 
-                    // added by Shaoting
-                    // id setted as NO.2
-                    if (BR_buffer[0] >= 0x20 && BR_buffer[0] <= 0x2f) { // id matches
-                        uart_write("This is my packet.\n");
-                        if (BR_buffer[0] == 0x24) { // normal transmission
+                        // added by Shaoting
+                        if (BR_buffer[0] == 0x04 + tag * 0x10) { // normal transmission
 
                             for (i = 1; i <= 14; i++) { // 渚濇妫�鏌ユ瘡涓�瀛�?�妭锛屼篃灏辨槸BR_buffer�?�?1-14椤癸紝鍥犱负绗�0椤�?�槸璁剧疆濂界殑
                                 tmp = BIT7;
@@ -222,40 +226,38 @@ void task_lora_test(void)
                             }
 
                             ACK_Configure(1);
+                            MCU_State = MCU_STATE_BR_TX_INIT_2;
                         }
-                        else if (BR_buffer[0] == 0x20) { // go to sleep
+                        else if (BR_buffer[0] == 0x00 + tag * 0x10) { // go to sleep
                             ACK_Configure(0);
                             sleep_flag = true;
+                            settimer_wait();
 
                             // deleted by Shaoting
                             // SetSwitchMode(SDPHY_MODE);
                         }
-                        else if (BR_buffer[0] == 0x28) { // broadcast
+                        else if (BR_buffer[0] == 0x08 || BR_buffer[0] == 0x18 || BR_buffer[0] == 0x28
+                                || BR_buffer[0] == 0x38 || BR_buffer[0] == 0x48 || BR_buffer[0] == 0x58
+                                || BR_buffer[0] == 0x68 || BR_buffer[0] == 0x78 || BR_buffer[0] == 0x88
+                                || BR_buffer[0] == 0x98 || BR_buffer[0] == 0xA8 || BR_buffer[0] == 0xB8
+                                || BR_buffer[0] == 0xC8 || BR_buffer[0] == 0xD8 || BR_buffer[0] == 0xE8) 
+                        { // broadcast
                             ACK_Configure(2);
+                            MCU_State = MCU_STATE_BR_TX_INIT_2;
                         }
-
-                        // added by Shaoting
-                        MCU_State = MCU_STATE_BR_TX_INIT_2;
+                        else {
+                            MCU_State = MCU_STATE_BR_RX_INIT;
+                        }
                     }
                     else {
-                        uart_write("This is not my packet.\n");
                         MCU_State = MCU_STATE_BR_RX_INIT;
+                        uart_write("CRC checked incorrectly.\n");
                     }
 
                     // deleted by Shaoting
                     // SX1276SetIRQFlagMask(RFLR_IRQFLAGS_PAYLOADCRCERROR_MASK + RFLR_IRQFLAGS_RXDONE_MASK);
                     // MCU_State = MCU_STATE_BR_RX_INIT;
                     // break;
-                }
-                else
-                {
-                    // deleted by Shaoting
-                    // SX1276SetIRQFlagMask(RFLR_IRQFLAGS_PAYLOADCRCERROR_MASK + RFLR_IRQFLAGS_RXDONE_MASK);
-                    
-                    MCU_State = MCU_STATE_BR_RX_INIT;
-
-                    // added by Shaoting
-                    uart_write("Incorrectly received!\n");
                 }
                 SX1276SetIRQFlagMask(RFLR_IRQFLAGS_PAYLOADCRCERROR_MASK + RFLR_IRQFLAGS_RXDONE_MASK);
                 break;
@@ -269,8 +271,11 @@ void task_lora_test(void)
                 // 璁剧疆SX1276鏃犵嚎鏀跺彂鑺墖鐨�?腑鏂爣蹇椾綅鎺╃爜锛圛RQ Flag Mask锛�?�负鍙戦�佸�?鎴愶紙TXDONE锛�?�爣蹇椾綅鎺╃爜
                 // 浠ヤ究灞忚斀闄や簡鍙戦�佸畬鎴愭爣蹇椾綅浠ュ鐨�?叾浠栨�?�鏈変腑鏂�傝繖鏄负浜嗛槻�?�㈠�?鏁版嵁鍙戦�佹湡闂村彂鐢熷叾浠栦腑鏂�屽�?�鍝嶆暟鎹紶杈撶殑瀹屾暣鎬�?
                 MCU_State = MCU_STATE_BR_TX_WAIT_2;
+
+                send_buffer[0] = ACK_buffer[0];
+                send_buffer[1] = crc8(ACK_buffer, 1);
                 
-                SX1276Send(ACK_buffer, 1);
+                SX1276Send(send_buffer, 2);
                 SX1276Write(RegFifoAddrPtr, SX1276Read(RegFifoRxCurrentAddr));
                 // RegFifoAddrPtr 鏄竴涓瘎瀛樺櫒鍦板潃锛岀敤浜庢寚绢��? SX1276 鑺墖涓殑 FIFO 鍐呭瓨涓殑褰撳墠鎸�?拡浣嶇疆锛屽嵆涓嬩�?�涓璇�?�彇鎴栧啓鍏ョ殑瀛�?�妭鐨勪綅缃�?
                 // RegFifoRxCurrentAddr 鏄竴涓瘎瀛樺櫒鍦板潃锛岀敤浜庢寚绢�哄綋鍓嶆帴鏀跺埌鐨勬暟鎹寘鍦��IFO涓殑鍦板潃

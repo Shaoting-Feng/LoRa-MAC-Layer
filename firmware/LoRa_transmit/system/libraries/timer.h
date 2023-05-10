@@ -5,9 +5,6 @@
 bool timeout_flag;
 bool timerstart;
 
-// added by ZY
-extern bool flag_bc;
-
 /**#######################External functions######################**/
 void timerinitial(void);
 void settimer(void);

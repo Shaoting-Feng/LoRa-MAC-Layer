@@ -12,6 +12,7 @@
 #include <sx1276/sx1276.h>
 #include <ota.h>
 #include <libraries/timer.h>
+#include <libraries/crc.h>
 
 /**########################Variables and Types############################**/
 

@@ -51,6 +51,7 @@ RadioEvents_t sx1276 =
 extern uint8_t BR_buffer[200];
 extern uint8_t transmit_cnt;
 // added by ZY
+static uint8_t ACK_buffer[1];
 uint8_t packet_size = 0;
 
 void task_lora_test(void)

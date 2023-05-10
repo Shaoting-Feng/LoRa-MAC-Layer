@@ -192,11 +192,22 @@ void task_lora_test(void)
 
                 SX1276Write(RegFifoAddrPtr, SX1276Read(RegFifoRxCurrentAddr));
                 packet_size = SX1276ReceivePayload(ACK_buffer);
-                if (ACK_buffer[0] != 0xf0)
+                if (crc8_check(ACK_buffer, 16))
                 {
-                    uart_write("Device found.\n");
+                    uart_write("CRC verified.\n");
+                    if (ACK_buffer[0] != 0xf0)
+                    {
+                        uart_write("Device found.\n");
+                    }
+                    MCU_State = MCU_STATE_BR_TX;
                 }
-                MCU_State = MCU_STATE_BR_TX;
+                else
+                {
+                    uart_write("Wrong CRC.\n");
+                    MCU_State = MCU_STATE_BR_TX_INIT;
+                }
+                
+                
                 break;
             }
 

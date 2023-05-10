@@ -3,6 +3,9 @@
 #include <libraries/board.h>
 #include <libraries/gpio.h>
 #include <libraries/uart.h>
+// added by ZY
+#include <libraries/crc.h>
+
 uint8_t transmit_cnt = 0;
 extern bool timeout_flag;
 /**########################Variables and Types############################**/
@@ -133,6 +136,9 @@ __interrupt void UART_Receive_ISR(void) {
         EUSCI_A_UART_clearInterrupt(EUSCI_A0_BASE, EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG);
         BR_buffer[transmit_cnt++] = UCA0RXBUF;
         if (transmit_cnt == 16) {
+            // added by ZY
+            BR_buffer[16] = crc8(BR_buffer, 16);    //生成CRC
+            
             GpioToggle(&SD_PHY.LED_D2);
             transmit_cnt = 0;
             if (MCU_State == MCU_STATE_UART_WAIT)

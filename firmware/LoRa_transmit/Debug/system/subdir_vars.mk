@@ -8,6 +8,7 @@ SHELL = cmd.exe
 C_SRCS += \
 ../system/board.c \
 ../system/clock.c \
+../system/crc.c \
 ../system/gpio.c \
 ../system/spi.c \
 ../system/timer.c \
@@ -16,6 +17,7 @@ C_SRCS += \
 C_DEPS += \
 ./system/board.d \
 ./system/clock.d \
+./system/crc.d \
 ./system/gpio.d \
 ./system/spi.d \
 ./system/timer.d \
@@ -24,6 +26,7 @@ C_DEPS += \
 OBJS += \
 ./system/board.obj \
 ./system/clock.obj \
+./system/crc.obj \
 ./system/gpio.obj \
 ./system/spi.obj \
 ./system/timer.obj \
@@ -32,6 +35,7 @@ OBJS += \
 OBJS__QUOTED += \
 "system\board.obj" \
 "system\clock.obj" \
+"system\crc.obj" \
 "system\gpio.obj" \
 "system\spi.obj" \
 "system\timer.obj" \
@@ -40,6 +44,7 @@ OBJS__QUOTED += \
 C_DEPS__QUOTED += \
 "system\board.d" \
 "system\clock.d" \
+"system\crc.d" \
 "system\gpio.d" \
 "system\spi.d" \
 "system\timer.d" \
@@ -48,6 +53,7 @@ C_DEPS__QUOTED += \
 C_SRCS__QUOTED += \
 "../system/board.c" \
 "../system/clock.c" \
+"../system/crc.c" \
 "../system/gpio.c" \
 "../system/spi.c" \
 "../system/timer.c" \

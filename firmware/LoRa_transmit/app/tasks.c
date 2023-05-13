@@ -12,6 +12,7 @@
 #include <sx1276/sx1276.h>
 #include <ota.h>
 #include <libraries/timer.h>
+#include <libraries/crc.h>
 
 /**########################Variables and Types############################**/
 
@@ -67,7 +68,7 @@ void task_lora_test(void)
     initUART();
     GpioWrite(&SD_PHY.LED_D1, 0);
     uart_write("Let's begin!\n");
-    uart_printNum(0xff);
+    //uart_printNum(0xff);
     /*
      * Backbone Radio
      */
@@ -78,13 +79,13 @@ void task_lora_test(void)
 
     uart_write("reset is ok!\n");
     version = SX1276Read(REG_VERSION);
-    uart_printNum(version);
+    //uart_printNum(version);
     while(version != 0x12)
     {
         GpioWrite(&SD_PHY.LED_D1, true);
         delay_ms(1);
         version = SX1276Read(REG_VERSION);
-        uart_printNum(version);
+        //uart_printNum(version);
     }
     GpioWrite(&SD_PHY.LED_D1, false);
 //    printf("LoRa Ver: 0x%x \n", version);
@@ -140,7 +141,8 @@ void task_lora_test(void)
 
 //              sx1276Radio.Rx(RX_TIMEOUT_VALUE);
                 MCU_State = MCU_STATE_BR_TX_WAIT;
-                SX1276Send( BR_buffer, 16 );
+                SX1276Write(RegFifoAddrPtr, SX1276Read(RegFifoRxCurrentAddr));
+                SX1276Send( BR_buffer, 17 );
 // added by ZY
                 settimer();
 //                GpioToggle(&SD_PHY.LED_D1);
@@ -191,11 +193,28 @@ void task_lora_test(void)
 
                 SX1276Write(RegFifoAddrPtr, SX1276Read(RegFifoRxCurrentAddr));
                 packet_size = SX1276ReceivePayload(ACK_buffer);
-                if (ACK_buffer[0] != 0xf0)
+                if (crc8_check(ACK_buffer, 1))
                 {
-                    uart_write("Device found.\n");
+                    uart_write("CRC verified.\n");
+                    if (ACK_buffer[0] != 0xf0)
+                    {
+                        uart_write("Found device ");
+                        uart_printNum(ACK_buffer[0] / 16);
+                        MCU_State = MCU_STATE_BR_RX_INIT;
+                        closetimer();
+                        settimer2();
+                    }
+                    else {
+                        MCU_State = MCU_STATE_BR_TX;
+                    }
                 }
-                MCU_State = MCU_STATE_BR_TX;
+                else
+                {
+                    uart_write("Wrong CRC.\n");
+                    MCU_State = MCU_STATE_BR_TX_INIT;
+                }
+                
+                
                 break;
             }
 

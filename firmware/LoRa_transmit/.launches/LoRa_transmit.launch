@@ -4,7 +4,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROGRAM.MSP430FR5969.ccxml.TI MSP430 USB1/MSP430" value="${build_artifact:LoRa_transmit}"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.MSP430FR5969.ccxml.TI MSP430 USB1/MSP430" value="LoRa_transmit"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:LoRa_transmit}"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.MSP430FR5969.ccxml.TI MSP430 USB1/MSP430" value="F:\ccs\program\LORA-Programming-Transmitter\firmware\LoRa_transmit\Debug\LoRa_transmit.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.MSP430FR5969.ccxml.TI MSP430 USB1/MSP430" value="D:\Common_File\Wireless_COM\OTA\firmware\LoRa_transmit\Debug\LoRa_transmit.out"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/LoRa_transmit"/>
 </listAttribute>

@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v20.2.2                     
 ******************************************************************************
->> Linked Thu May  4 16:35:10 2023
+>> Linked Sat May 13 09:57:45 2023
 
 OUTPUT FILE NAME:   <SD_PHY.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs_mpu"  address: 00004962
+ENTRY POINT SYMBOL: "_c_int00_noargs_mpu"  address: 00004554
 
 
 MEMORY CONFIGURATION
@@ -18,8 +18,8 @@ MEMORY CONFIGURATION
   INFOC                 00001880   00000080  00000000  00000080  RWIX
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
-  RAM                   00001c00   00000800  0000040e  000003f2  RWIX
-  FRAM                  00004400   0000bb80  00000d50  0000ae30  RWIX
+  RAM                   00001c00   00000800  000003fd  00000403  RWIX
+  FRAM                  00004400   0000bb80  0000088b  0000b2f5  RWIX
   JTAGSIGNATURE         0000ff80   00000004  00000004  00000000  RWIX  ffff 
   BSLSIGNATURE          0000ff84   00000004  00000004  00000000  RWIX  ffff 
   IPESIGNATURE          0000ff88   00000008  00000008  00000000  RWIX  ffff 
@@ -90,30 +90,30 @@ section   page    origin      length       input sections
 .TI.persistent 
 *          0    00004400    00000000     UNINITIALIZED
 
-.cio       0    00004400    00000120     UNINITIALIZED
-                  00004400    00000120     rts430x_lc_rd_eabi.lib : trgmsg.c.obj (.cio)
+.cio       0    00004400    00000000     UNINITIALIZED
 
-.sysmem    0    00004520    00000000     UNINITIALIZED
+.sysmem    0    00004400    00000000     UNINITIALIZED
 
 .ipestruct 
-*          0    00004800    00000000     UNINITIALIZED
+*          0    00004400    00000000     UNINITIALIZED
 
-.ipe       0    00004800    00000000     UNINITIALIZED
+.ipe       0    00004400    00000000     UNINITIALIZED
 
 .ipe_const 
-*          0    00004800    00000000     UNINITIALIZED
+*          0    00004400    00000000     UNINITIALIZED
 
 .ipe:_isr 
-*          0    00004800    00000000     UNINITIALIZED
+*          0    00004400    00000000     UNINITIALIZED
 
 .ipe_vars 
-*          0    00004800    00000000     UNINITIALIZED
+*          0    00004400    00000000     UNINITIALIZED
 
-.cinit     0    00005104    0000004c     
-                  00005104    0000002a     (.cinit..data.load) [load image, compression = lzss]
-                  0000512e    0000000c     (__TI_handler_table)
-                  0000513a    00000006     (.cinit..bss.load) [load image, compression = zero_init]
-                  00005140    00000010     (__TI_cinit_table)
+.cinit     0    00004c4a    00000042     
+                  00004c4a    0000001f     (.cinit..data.load) [load image, compression = lzss]
+                  00004c69    00000001     --HOLE-- [fill = 0]
+                  00004c6a    0000000c     (__TI_handler_table)
+                  00004c76    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  00004c7c    00000010     (__TI_cinit_table)
 
 .binit     0    00004400    00000000     
 
@@ -121,110 +121,105 @@ section   page    origin      length       input sections
 *          0    00004400    00000000     UNINITIALIZED
 
 .text:_isr 
-*          0    00004800    0000018a     
-                  00004800    000000e2     timer.obj (.text:_isr:TIMER0_A0_ISR)
-                  000048e2    0000004e     gpio.obj (.text:_isr:PORT4_IRQHandler)
-                  00004930    00000032     spi.obj (.text:_isr:EUSCIB0_IRQHandler)
-                  00004962    00000020     rts430x_lc_rd_eabi.lib : boot.c.obj (.text:_isr:_c_int00_noargs_mpu)
-                  00004982    00000008                            : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
+*          0    00004400    0000017c     
+                  00004400    000000d4     timer.obj (.text:_isr:TIMER0_A0_ISR)
+                  000044d4    0000004e     gpio.obj (.text:_isr:PORT4_IRQHandler)
+                  00004522    00000032     spi.obj (.text:_isr:EUSCIB0_IRQHandler)
+                  00004554    00000020     rts430x_lc_rd_eabi.lib : boot.c.obj (.text:_isr:_c_int00_noargs_mpu)
+                  00004574    00000008                            : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
 
-.bss       0    00001c00    0000032c     UNINITIALIZED
+.bss       0    00001c00    00000329     UNINITIALIZED
                   00001c00    00000100     tasks.obj (.bss:BR_buffer)
                   00001d00    00000100     sx1276.obj (.bss:RxTxBuffer)
                   00001e00    000000c4     (.common:SX1276)
                   00001ec4    00000050     (.common:SD_PHY)
-                  00001f14    00000008     (.common:parmbuf)
-                  00001f1c    00000004     sx1276.obj (.bss)
-                  00001f20    00000002     (.common:ACK_buffer)
-                  00001f22    00000002     (.common:random_num)
-                  00001f24    00000002     (.common:send_buffer)
-                  00001f26    00000001     (.common:SPI_RXData_LoRa)
-                  00001f27    00000001     (.common:done_flag)
-                  00001f28    00000001     (.common:duty_flag)
-                  00001f29    00000001     (.common:sleep_flag)
-                  00001f2a    00000001     (.common:timerstart_sleep)
-                  00001f2b    00000001     (.common:timerstart_wait)
+                  00001f14    00000004     sx1276.obj (.bss)
+                  00001f18    00000002     (.common:ACK_buffer)
+                  00001f1a    00000002     (.common:RandomCnt)
+                  00001f1c    00000002     (.common:random_num)
+                  00001f1e    00000002     (.common:send_buffer)
+                  00001f20    00000002     (.common:tag)
+                  00001f22    00000001     (.common:SPI_RXData_LoRa)
+                  00001f23    00000001     (.common:broadcast_flag)
+                  00001f24    00000001     (.common:done_flag)
+                  00001f25    00000001     (.common:duty_flag)
+                  00001f26    00000001     (.common:sleep_flag)
+                  00001f27    00000001     (.common:timerstart_sleep)
+                  00001f28    00000001     (.common:timerstart_wait)
 
-.data      0    00001f2c    00000042     UNINITIALIZED
-                  00001f2c    00000024     tasks.obj (.data:sx1276)
-                  00001f50    00000008     cs.obj (.data)
-                  00001f58    00000004     rts430x_lc_rd_eabi.lib : _lock.c.obj (.data:_lock)
-                  00001f5c    00000004                            : _lock.c.obj (.data:_unlock)
-                  00001f60    00000004                            : rand.c.obj (.data)
-                  00001f64    00000004     timer.obj (.data)
-                  00001f68    00000003     tasks.obj (.data)
-                  00001f6b    00000001     gpio.obj (.data)
-                  00001f6c    00000002     main.obj (.data)
+.data      0    00001f2a    00000034     UNINITIALIZED
+                  00001f2a    00000024     tasks.obj (.data:sx1276)
+                  00001f4e    00000008     cs.obj (.data)
+                  00001f56    00000004     timer.obj (.data)
+                  00001f5a    00000002     main.obj (.data)
+                  00001f5c    00000001     gpio.obj (.data)
+                  00001f5d    00000001     tasks.obj (.data)
 
 .stack     0    00002360    000000a0     UNINITIALIZED
                   00002360    00000004     rts430x_lc_rd_eabi.lib : boot.c.obj (.stack)
                   00002364    0000009c     --HOLE--
 
-.text.1    0    0000498a    0000046c     
-                  0000498a    0000002e     crc.obj (.text:crc8)
-                  000049b8    0000002c     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
-                  000049e4    0000002c     rts430x_lc_rd_eabi.lib : div16s.asm.obj (.text)
-                  00004a10    00000028     sx1276.obj (.text:SX1276Reset)
-                  00004a38    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
-                  00004a5c    00000024                            : mult32_f5hw.asm.obj (.text)
-                  00004a80    00000022     eusci_a_uart.obj (.text:EUSCI_A_UART_transmitData)
-                  00004aa2    00000022     timer.obj (.text:endtimer_sleep)
-                  00004ac4    00000020     ack.obj (.text:ACK_Configure)
-                  00004ae4    00000020     wdt_a.obj (.text:WDT_A_hold)
-                  00004b04    00000020     timer.obj (.text:settimer_wait)
-                  00004b24    0000001e     cs.obj (.text:CS_getACLK)
-                  00004b42    0000001e     gpio.obj (.text:GPIO_clearInterrupt)
-                  00004b60    0000001e     gpio.obj (.text:GPIO_enableInterrupt)
-                  00004b7e    0000001c     sx1276.obj (.text:SX1276SetIRQFlagMask)
-                  00004b9a    0000001c     sx1276.obj (.text:SX1276SetOpMode)
-                  00004bb6    00000018     gpio.obj (.text:GpioWrite)
-                  00004bce    00000018     sx1276.obj (.text:SX1276GetPaSelect)
-                  00004be6    00000018     rts430x_lc_rd_eabi.lib : time.c.obj (.text:__time32)
-                  00004bfe    00000018                            : mult16_f5hw.asm.obj (.text)
-                  00004c16    00000016     cs.obj (.text:CS_getMCLK)
-                  00004c2c    00000016     spi.obj (.text:SpiInOut_LoRa)
-                  00004c42    00000016     rts430x_lc_rd_eabi.lib : memset.c.obj (.text:memset)
-                  00004c58    00000016                            : div16u.asm.obj (.text)
-                  00004c6e    00000016                            : rand.c.obj (.text:srand)
-                  00004c84    00000014                            : memcpy.c.obj (.text:memcpy)
-                  00004c98    00000012     sx1276.obj (.text:SX1276Write)
-                  00004caa    00000012     rts430x_lc_rd_eabi.lib : fixdu.c.obj (.text:__mspabi_fixdu)
-                  00004cbc    00000012                            : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
-                  00004cce    00000012     main.obj (.text:main)
-                  00004ce0    00000010     cs.obj (.text:CS_disableClockRequest)
-                  00004cf0    00000010     sx1276.obj (.text:SX1276Read)
-                  00004d00    00000010     rts430x_lc_rd_eabi.lib : asr32.asm.obj (.text:l_asr)
-                  00004d10    00000010                            : lsl32.asm.obj (.text:l_lsl)
-                  00004d20    00000010                            : lsr32.asm.obj (.text:l_lsr)
-                  00004d30    0000000e     board.obj (.text:BoardInitMcu)
-                  00004d3e    0000000e     rts430x_lc_rd_eabi.lib : strlen.c.obj (.text:strlen)
-                  00004d4c    0000000c     board.obj (.text:BoardIoIrqInit)
-                  00004d58    0000000c     eusci_b_spi.obj (.text:EUSCI_B_SPI_enableInterrupt)
-                  00004d64    0000000c     sx1276.obj (.text:SX1276SetSleep)
-                  00004d70    0000000c     sx1276.obj (.text:SX1276SetStby)
-                  00004d7c    0000000c     sx1276.obj (.text:SX1276WriteFifo)
-                  00004d88    0000000c     rts430x_lc_rd_eabi.lib : fltid.c.obj (.text:__mspabi_fltid)
-                  00004d94    0000000a     eusci_b_spi.obj (.text:EUSCI_B_SPI_getInterruptStatus)
-                  00004d9e    0000000a     gpio.obj (.text:GpioToggle)
-                  00004da8    0000000a     rts430x_lc_rd_eabi.lib : lsl16.asm.obj (.text)
-                  00004db2    00000006     eusci_a_uart.obj (.text:EUSCI_A_UART_enable)
-                  00004db8    00000006     eusci_b_spi.obj (.text:EUSCI_B_SPI_enable)
-                  00004dbe    00000006     pmm.obj (.text:PMM_unlockLPM5)
-                  00004dc4    00000006     sx1276.obj (.text:SX1276GetStatus)
-                  00004dca    00000006     rts430x_lc_rd_eabi.lib : fltud.c.obj (.text:__mspabi_fltud)
-                  00004dd0    00000006                            : exit.c.obj (.text:abort)
-                  00004dd6    00000006     timer.obj (.text:settimer_sleep)
-                  00004ddc    00000004     sx1276.obj (.text:SX1276CheckRfFrequency)
-                  00004de0    00000004     rts430x_lc_rd_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
-                  00004de4    00000002     tasks.obj (.text:SX1276_CadDone)
-                  00004de6    00000002     tasks.obj (.text:SX1276_FhssChangeChannel)
-                  00004de8    00000002     tasks.obj (.text:SX1276_OnRxDone)
-                  00004dea    00000002     tasks.obj (.text:SX1276_OnRxError)
-                  00004dec    00000002     tasks.obj (.text:SX1276_OnRxTimeout)
-                  00004dee    00000002     tasks.obj (.text:SX1276_OnTxDone)
-                  00004df0    00000002     tasks.obj (.text:SX1276_OnTxTimeout)
-                  00004df2    00000002     rts430x_lc_rd_eabi.lib : _lock.c.obj (.text:_nop)
-                  00004df4    00000002                            : startup.c.obj (.text:_system_post_cinit)
+.text.1    0    0000457c    000003b4     
+                  0000457c    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
+                  000045a0    00000024                            : mult32_f5hw.asm.obj (.text)
+                  000045c4    00000022     eusci_a_uart.obj (.text:EUSCI_A_UART_transmitData)
+                  000045e6    00000020     ack.obj (.text:ACK_Configure)
+                  00004606    00000020     wdt_a.obj (.text:WDT_A_hold)
+                  00004626    0000001e     gpio.obj (.text:GPIO_clearInterrupt)
+                  00004644    0000001e     gpio.obj (.text:GPIO_enableInterrupt)
+                  00004662    0000001c     gpio.obj (.text:GPIO_setOutputHighOnPin)
+                  0000467e    0000001c     gpio.obj (.text:GPIO_setOutputLowOnPin)
+                  0000469a    0000001c     sx1276.obj (.text:SX1276SetIRQFlagMask)
+                  000046b6    0000001c     sx1276.obj (.text:SX1276SetOpMode)
+                  000046d2    0000001a     cs.obj (.text:CS_getSMCLK)
+                  000046ec    0000001a     timer.obj (.text:endtimer_sleep)
+                  00004706    00000018     gpio.obj (.text:GpioWrite)
+                  0000471e    00000018     sx1276.obj (.text:SX1276GetPaSelect)
+                  00004736    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.asm.obj (.text)
+                  0000474e    00000016     cs.obj (.text:CS_getMCLK)
+                  00004764    00000016     spi.obj (.text:SpiInOut_LoRa)
+                  0000477a    00000016     rts430x_lc_rd_eabi.lib : memset.c.obj (.text:memset)
+                  00004790    00000016                            : div16u.asm.obj (.text)
+                  000047a6    00000014                            : memcpy.c.obj (.text:memcpy)
+                  000047ba    00000014     timer.obj (.text:settimer_wait)
+                  000047ce    00000012     sx1276.obj (.text:SX1276Write)
+                  000047e0    00000012     rts430x_lc_rd_eabi.lib : fixdu.c.obj (.text:__mspabi_fixdu)
+                  000047f2    00000012                            : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  00004804    00000012     main.obj (.text:main)
+                  00004816    00000010     cs.obj (.text:CS_disableClockRequest)
+                  00004826    00000010     sx1276.obj (.text:SX1276Read)
+                  00004836    00000010     rts430x_lc_rd_eabi.lib : asr32.asm.obj (.text:l_asr)
+                  00004846    00000010                            : lsl32.asm.obj (.text:l_lsl)
+                  00004856    00000010                            : lsr32.asm.obj (.text:l_lsr)
+                  00004866    0000000e     board.obj (.text:BoardInitMcu)
+                  00004874    0000000e     rts430x_lc_rd_eabi.lib : strlen.c.obj (.text:strlen)
+                  00004882    0000000c     board.obj (.text:BoardIoIrqInit)
+                  0000488e    0000000c     eusci_b_spi.obj (.text:EUSCI_B_SPI_enableInterrupt)
+                  0000489a    0000000c     sx1276.obj (.text:SX1276SetSleep)
+                  000048a6    0000000c     sx1276.obj (.text:SX1276SetStby)
+                  000048b2    0000000c     sx1276.obj (.text:SX1276WriteFifo)
+                  000048be    0000000c     rts430x_lc_rd_eabi.lib : fltid.c.obj (.text:__mspabi_fltid)
+                  000048ca    0000000a     eusci_b_spi.obj (.text:EUSCI_B_SPI_getInterruptStatus)
+                  000048d4    0000000a     gpio.obj (.text:GpioToggle)
+                  000048de    0000000a     rts430x_lc_rd_eabi.lib : lsl16.asm.obj (.text)
+                  000048e8    00000006     eusci_a_uart.obj (.text:EUSCI_A_UART_enable)
+                  000048ee    00000006     eusci_b_spi.obj (.text:EUSCI_B_SPI_enable)
+                  000048f4    00000006     pmm.obj (.text:PMM_unlockLPM5)
+                  000048fa    00000006     sx1276.obj (.text:SX1276GetStatus)
+                  00004900    00000006     rts430x_lc_rd_eabi.lib : fltud.c.obj (.text:__mspabi_fltud)
+                  00004906    00000006                            : exit.c.obj (.text:abort)
+                  0000490c    00000006     tag.obj (.text:set_tag)
+                  00004912    00000006     timer.obj (.text:settimer_sleep)
+                  00004918    00000004     sx1276.obj (.text:SX1276CheckRfFrequency)
+                  0000491c    00000004     rts430x_lc_rd_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
+                  00004920    00000002     tasks.obj (.text:SX1276_CadDone)
+                  00004922    00000002     tasks.obj (.text:SX1276_FhssChangeChannel)
+                  00004924    00000002     tasks.obj (.text:SX1276_OnRxDone)
+                  00004926    00000002     tasks.obj (.text:SX1276_OnRxError)
+                  00004928    00000002     tasks.obj (.text:SX1276_OnRxTimeout)
+                  0000492a    00000002     tasks.obj (.text:SX1276_OnTxDone)
+                  0000492c    00000002     tasks.obj (.text:SX1276_OnTxTimeout)
+                  0000492e    00000002     rts430x_lc_rd_eabi.lib : startup.c.obj (.text:_system_post_cinit)
 
 $fill000   0    0000ff80    00000004     
                   0000ff80    00000004     --HOLE-- [fill = ffff]
@@ -323,103 +318,102 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.c.obj (.reset)
 
-.const     0    00004df6    0000030e     
-                  00004df6    000000b8     tasks.obj (.const:.string)
-                  00004eae    00000084     sx1276.obj (.const:FskBandwidths)
-                  00004f32    00000054     board.obj (.const:sx1276Radio)
-                  00004f86    00000044     timer.obj (.const:.string)
-                  00004fca    00000040     sx1276.obj (.const:RadioRegsInit)
-                  0000500a    0000001c     gpio.obj (.const:GPIO_PORT_TO_BASE)
-                  00005026    00000012     spi.obj (.const:$P$T0$1)
-                  00005038    00000010     uart.obj (.const:$P$T1$2)
-                  00005048    0000000e     timer.obj (.const:$P$T0$1)
-                  00005056    0000000e     board.obj (.const:PIN_MSP_P1_0)
-                  00005064    0000000e     board.obj (.const:PIN_MSP_P1_3)
-                  00005072    0000000e     board.obj (.const:PIN_MSP_P1_6)
-                  00005080    0000000e     board.obj (.const:PIN_MSP_P1_7)
-                  0000508e    0000000e     board.obj (.const:PIN_MSP_P2_2)
-                  0000509c    0000000e     board.obj (.const:PIN_MSP_P3_0)
-                  000050aa    0000000e     board.obj (.const:PIN_MSP_P3_1)
-                  000050b8    0000000e     board.obj (.const:PIN_MSP_P3_4)
-                  000050c6    0000000e     board.obj (.const:PIN_MSP_P3_5)
-                  000050d4    0000000e     board.obj (.const:PIN_MSP_P3_6)
-                  000050e2    0000000e     board.obj (.const:PIN_MSP_P4_3)
-                  000050f0    0000000e     board.obj (.const:PIN_MSP_P4_6)
-                  000050fe    00000005     uart.obj (.const:.string:$P$T0$1)
-                  00005103    00000001     gpio.obj (.const)
+.const     0    00004930    00000319     
+                  00004930    000000e4     tasks.obj (.const:.string)
+                  00004a14    00000084     sx1276.obj (.const:FskBandwidths)
+                  00004a98    00000054     board.obj (.const:sx1276Radio)
+                  00004aec    00000040     sx1276.obj (.const:RadioRegsInit)
+                  00004b2c    00000028     timer.obj (.const:.string)
+                  00004b54    0000001c     gpio.obj (.const:GPIO_PORT_TO_BASE)
+                  00004b70    00000012     spi.obj (.const:$P$T0$1)
+                  00004b82    00000010     uart.obj (.const:$P$T1$2)
+                  00004b92    0000000e     timer.obj (.const:$P$T0$1)
+                  00004ba0    0000000e     board.obj (.const:PIN_MSP_P1_0)
+                  00004bae    0000000e     board.obj (.const:PIN_MSP_P1_3)
+                  00004bbc    0000000e     board.obj (.const:PIN_MSP_P1_6)
+                  00004bca    0000000e     board.obj (.const:PIN_MSP_P1_7)
+                  00004bd8    0000000e     board.obj (.const:PIN_MSP_P2_2)
+                  00004be6    0000000e     board.obj (.const:PIN_MSP_P3_0)
+                  00004bf4    0000000e     board.obj (.const:PIN_MSP_P3_1)
+                  00004c02    0000000e     board.obj (.const:PIN_MSP_P3_4)
+                  00004c10    0000000e     board.obj (.const:PIN_MSP_P3_5)
+                  00004c1e    0000000e     board.obj (.const:PIN_MSP_P3_6)
+                  00004c2c    0000000e     board.obj (.const:PIN_MSP_P4_3)
+                  00004c3a    0000000e     board.obj (.const:PIN_MSP_P4_6)
+                  00004c48    00000001     gpio.obj (.const)
 
 .text.2    0    00010000    00003ff8     
                   00010000    00000466     rts430x_lc_rd_eabi.lib : frcdivd.c.obj (.text:__TI_frcdivd)
-                  00010466    00000436     sx1276.obj (.text:SX1276SetTxConfig)
-                  0001089c    000003fa     tasks.obj (.text:task_lora_test)
-                  00010c96    000003be     sx1276.obj (.text:SX1276SetRxConfig)
-                  00011054    0000037a     sx1276.obj (.text:SX1276SetRx)
-                  000113ce    0000032c     sx1276.obj (.text:SX1276GetTimeOnAir)
-                  000116fa    000002e0     rts430x_lc_rd_eabi.lib : addd.c.obj (.text:__mspabi_addd)
-                  000119da    00000280                            : frcmpyd.c.obj (.text:__TI_frcmpyd)
-                  00011c5a    00000266                            : mpyd.c.obj (.text:__mspabi_mpyd)
-                  00011ec0    00000248                            : frcaddd.c.obj (.text:__TI_frcaddd)
-                  00012108    00000222     board.obj (.text:BoardIoInit)
-                  0001232a    00000222     rts430x_lc_rd_eabi.lib : divd.c.obj (.text:__mspabi_divd)
-                  0001254c    000001c6                            : s_ceil.c.obj (.text:ceil)
-                  00012712    000001c4                            : s_floor.c.obj (.text:floor)
-                  000128d6    0000017c     cs.obj (.text:privateCSASourceClockFromDCO)
-                  00012a52    00000140     cs.obj (.text:CS_setDCOFreq)
-                  00012b92    00000106     rts430x_lc_rd_eabi.lib : s_round.c.obj (.text:round)
-                  00012c98    000000e0     cs.obj (.text:privateCSAComputeCLKFrequency)
-                  00012d78    000000de     sx1276.obj (.text:RxChainCalibration)
-                  00012e56    000000d8     rts430x_lc_rd_eabi.lib : cmpd.c.obj (.text:__mspabi_cmpd)
-                  00012f2e    000000b2                            : renormd.c.obj (.text:__TI_renormd)
-                  00012fe0    000000a8     clock.obj (.text:ClockSet)
-                  00013088    0000009e     rts430x_lc_rd_eabi.lib : fltlid.c.obj (.text:__mspabi_fltlid)
-                  00013126    0000009a     eusci_a_uart.obj (.text:EUSCI_A_UART_init)
-                  000131c0    0000008c     spi.obj (.text:SpiInit)
-                  0001324c    00000080     rts430x_lc_rd_eabi.lib : fltuld.c.obj (.text:__mspabi_fltuld)
-                  000132cc    0000007c     timer_a.obj (.text:Timer_A_initUpMode)
-                  00013348    00000076     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
-                  000133be    00000074     uart.obj (.text:initUART)
-                  00013432    00000072     sx1276.obj (.text:SX1276SetModem)
-                  000134a4    00000070     sx1276.obj (.text:SX1276Send)
-                  00013514    0000006a     cs.obj (.text:CS_initClockSignal)
-                  0001357e    0000006a     sx1276.obj (.text:GetFskBandwidthRegValue)
-                  000135e8    00000068     rts430x_lc_rd_eabi.lib : fixdul.c.obj (.text:__mspabi_fixdul)
-                  00013650    00000064     clock.obj (.text:ClockInit)
-                  000136b4    00000062     sx1276.obj (.text:SX1276Init)
-                  00013716    0000005c     uart.obj (.text:uart_printNum)
-                  00013772    0000005a     gpio.obj (.text:GpioSetInterrupt)
-                  000137cc    0000005a     sx1276.obj (.text:SX1276Random)
-                  00013826    00000058     rts430x_lc_rd_eabi.lib : div32u.asm.obj (.text)
-                  0001387e    00000056     eusci_b_spi.obj (.text:EUSCI_B_SPI_initMaster)
-                  000138d4    00000056     rts430x_lc_rd_eabi.lib : hosttime.c.obj (.text:HOSTtime)
-                  0001392a    00000054     sx1276.obj (.text:SX1276SetChannel)
-                  0001397e    00000054     rts430x_lc_rd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
-                  000139d2    00000050     sx1276.obj (.text:SX1276ReadRssi)
-                  00013a22    0000004a     gpio.obj (.text:GPIO_setAsInputPinWithPullDownResistor)
-                  00013a6c    0000004a     sx1276.obj (.text:SX1276ReadBuffer)
-                  00013ab6    00000048     gpio.obj (.text:GpioInit)
-                  00013afe    00000048     timer.obj (.text:timerinitial)
-                  00013b46    00000046     sx1276.obj (.text:SX1276WriteBuffer)
-                  00013b8c    00000042     sx1276.obj (.text:SX1276SetTx)
-                  00013bce    00000040     rts430x_lc_rd_eabi.lib : rand.c.obj (.text:rand)
-                  00013c0e    00000040                            : div32s.asm.obj (.text)
-                  00013c4e    0000003e     sx1276.obj (.text:SX1276IsChannelFree)
-                  00013c8c    0000003e     rts430x_lc_rd_eabi.lib : asr32.asm.obj (.text:l_asr_const)
-                  00013cca    0000003e                            : lsl32.asm.obj (.text:l_lsl_const)
-                  00013d08    0000003e                            : lsr32.asm.obj (.text:l_lsr_const)
-                  00013d46    00000038     sx1276.obj (.text:SX1276StartCad)
-                  00013d7e    00000038     utils.obj (.text:delay_ms)
-                  00013db6    00000036     rts430x_lc_rd_eabi.lib : trgmsg.c.obj (.text:__TI_writemsg)
-                  00013dec    00000036     crc.obj (.text:crc8_check)
-                  00013e22    00000034     sx1276.obj (.text:SX1276ReceivePayload)
-                  00013e56    00000034     sx1276.obj (.text:SX1276SetMaxPayloadLength)
-                  00013e8a    00000032     rts430x_lc_rd_eabi.lib : trgmsg.c.obj (.text:__TI_readmsg)
-                  00013ebc    00000032                            : subd.c.obj (.text:__mspabi_subd)
-                  00013eee    00000032     board.obj (.text:delay_us)
-                  00013f20    00000032     uart.obj (.text:uart_write)
-                  00013f52    00000030     gpio.obj (.text:GPIO_getInterruptStatus)
-                  00013f82    0000002e     gpio.obj (.text:GPIO_selectInterruptEdge)
-                  00013fb0    0000002e     rts430x_lc_rd_eabi.lib : negd.c.obj (.text:__mspabi_negd)
-                  00013fde    0000001a     cs.obj (.text:CS_getSMCLK)
+                  00010466    00000462     tasks.obj (.text:task_lora_test)
+                  000108c8    00000436     sx1276.obj (.text:SX1276SetTxConfig)
+                  00010cfe    000003be     sx1276.obj (.text:SX1276SetRxConfig)
+                  000110bc    0000037a     sx1276.obj (.text:SX1276SetRx)
+                  00011436    0000032c     sx1276.obj (.text:SX1276GetTimeOnAir)
+                  00011762    000002e0     rts430x_lc_rd_eabi.lib : addd.c.obj (.text:__mspabi_addd)
+                  00011a42    00000280                            : frcmpyd.c.obj (.text:__TI_frcmpyd)
+                  00011cc2    00000266                            : mpyd.c.obj (.text:__mspabi_mpyd)
+                  00011f28    00000248                            : frcaddd.c.obj (.text:__TI_frcaddd)
+                  00012170    00000222     board.obj (.text:BoardIoInit)
+                  00012392    00000222     rts430x_lc_rd_eabi.lib : divd.c.obj (.text:__mspabi_divd)
+                  000125b4    000001c6                            : s_ceil.c.obj (.text:ceil)
+                  0001277a    000001c4                            : s_floor.c.obj (.text:floor)
+                  0001293e    0000017c     cs.obj (.text:privateCSASourceClockFromDCO)
+                  00012aba    00000140     cs.obj (.text:CS_setDCOFreq)
+                  00012bfa    00000106     rts430x_lc_rd_eabi.lib : s_round.c.obj (.text:round)
+                  00012d00    000000e0     cs.obj (.text:privateCSAComputeCLKFrequency)
+                  00012de0    000000de     sx1276.obj (.text:RxChainCalibration)
+                  00012ebe    000000d8     rts430x_lc_rd_eabi.lib : cmpd.c.obj (.text:__mspabi_cmpd)
+                  00012f96    000000b2                            : renormd.c.obj (.text:__TI_renormd)
+                  00013048    000000a8     clock.obj (.text:ClockSet)
+                  000130f0    0000009e     rts430x_lc_rd_eabi.lib : fltlid.c.obj (.text:__mspabi_fltlid)
+                  0001318e    0000009a     eusci_a_uart.obj (.text:EUSCI_A_UART_init)
+                  00013228    0000008c     spi.obj (.text:SpiInit)
+                  000132b4    00000080     rts430x_lc_rd_eabi.lib : fltuld.c.obj (.text:__mspabi_fltuld)
+                  00013334    0000007c     timer_a.obj (.text:Timer_A_initUpMode)
+                  000133b0    00000076     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  00013426    00000074     uart.obj (.text:initUART)
+                  0001349a    00000072     sx1276.obj (.text:SX1276SetModem)
+                  0001350c    00000070     sx1276.obj (.text:SX1276Send)
+                  0001357c    0000006a     cs.obj (.text:CS_initClockSignal)
+                  000135e6    0000006a     sx1276.obj (.text:GetFskBandwidthRegValue)
+                  00013650    00000068     rts430x_lc_rd_eabi.lib : fixdul.c.obj (.text:__mspabi_fixdul)
+                  000136b8    00000064     clock.obj (.text:ClockInit)
+                  0001371c    00000062     sx1276.obj (.text:SX1276Init)
+                  0001377e    0000005a     gpio.obj (.text:GpioSetInterrupt)
+                  000137d8    0000005a     sx1276.obj (.text:SX1276Random)
+                  00013832    00000058     rts430x_lc_rd_eabi.lib : div32u.asm.obj (.text)
+                  0001388a    00000056     eusci_b_spi.obj (.text:EUSCI_B_SPI_initMaster)
+                  000138e0    00000054     sx1276.obj (.text:SX1276SetChannel)
+                  00013934    00000054     rts430x_lc_rd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
+                  00013988    00000054     timer.obj (.text:timerinitial)
+                  000139dc    00000050     sx1276.obj (.text:SX1276ReadRssi)
+                  00013a2c    0000004a     gpio.obj (.text:GPIO_setAsInputPinWithPullDownResistor)
+                  00013a76    0000004a     sx1276.obj (.text:SX1276ReadBuffer)
+                  00013ac0    00000048     gpio.obj (.text:GpioInit)
+                  00013b08    00000046     sx1276.obj (.text:SX1276WriteBuffer)
+                  00013b4e    00000042     sx1276.obj (.text:SX1276SetTx)
+                  00013b90    00000040     rts430x_lc_rd_eabi.lib : div32s.asm.obj (.text)
+                  00013bd0    0000003e     sx1276.obj (.text:SX1276IsChannelFree)
+                  00013c0e    0000003e     rts430x_lc_rd_eabi.lib : asr32.asm.obj (.text:l_asr_const)
+                  00013c4c    0000003e                            : lsl32.asm.obj (.text:l_lsl_const)
+                  00013c8a    0000003e                            : lsr32.asm.obj (.text:l_lsr_const)
+                  00013cc8    00000038     sx1276.obj (.text:SX1276StartCad)
+                  00013d00    00000038     utils.obj (.text:delay_ms)
+                  00013d38    00000036     crc.obj (.text:crc8_check)
+                  00013d6e    00000034     gpio.obj (.text:GPIO_setAsOutputPin)
+                  00013da2    00000034     sx1276.obj (.text:SX1276ReceivePayload)
+                  00013dd6    00000034     sx1276.obj (.text:SX1276SetMaxPayloadLength)
+                  00013e0a    00000032     rts430x_lc_rd_eabi.lib : subd.c.obj (.text:__mspabi_subd)
+                  00013e3c    00000032     board.obj (.text:delay_us)
+                  00013e6e    00000032     uart.obj (.text:uart_write)
+                  00013ea0    00000030     gpio.obj (.text:GPIO_getInterruptStatus)
+                  00013ed0    0000002e     gpio.obj (.text:GPIO_selectInterruptEdge)
+                  00013efe    0000002e     rts430x_lc_rd_eabi.lib : negd.c.obj (.text:__mspabi_negd)
+                  00013f2c    0000002e     crc.obj (.text:crc8)
+                  00013f5a    0000002c     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
+                  00013f86    0000002c     rts430x_lc_rd_eabi.lib : div16s.asm.obj (.text)
+                  00013fb2    00000028     sx1276.obj (.text:SX1276Reset)
+                  00013fda    0000001e     cs.obj (.text:CS_getACLK)
 
 MODULE SUMMARY
 
@@ -431,20 +425,20 @@ MODULE SUMMARY
        Total:                       18      0         85     
                                                              
     .\app\
-       tasks.obj                    1032    184       304    
+       tasks.obj                    1136    228       307    
     +--+----------------------------+-------+---------+---------+
-       Total:                       1032    184       304    
+       Total:                       1136    228       307    
                                                              
     .\driverlib\MSP430FR5xx_6xx\
        cs.obj                       1124    0         8      
-       gpio.obj                     228     28        0      
+       gpio.obj                     336     28        0      
        eusci_a_uart.obj             194     0         0      
        timer_a.obj                  124     0         0      
        eusci_b_spi.obj              114     0         0      
        wdt_a.obj                    32      0         0      
        pmm.obj                      6       0         0      
     +--+----------------------------+-------+---------+---------+
-       Total:                       1822    28        8      
+       Total:                       1930    28        8      
                                                              
     .\sx1276\
        sx1276.obj                   5276    196       456    
@@ -453,27 +447,28 @@ MODULE SUMMARY
                                                              
     .\system\
        board.obj                    622     252       0      
-       timer.obj                    370     84        4      
-       uart.obj                     258     21        0      
+       timer.obj                    348     56        4      
        gpio.obj                     274     3         1      
        clock.obj                    268     0         0      
        spi.obj                      212     20        0      
+       uart.obj                     166     16        0      
        crc.obj                      100     0         0      
        ack.obj                      32      0         0      
+       tag.obj                      6       0         0      
     +--+----------------------------+-------+---------+---------+
-       Total:                       2136    380       5      
+       Total:                       2028    347       5      
                                                              
     .\utils\
        utils.obj                    56      0         0      
     +--+----------------------------+-------+---------+---------+
        Total:                       56      0         0      
                                                              
-    D:\CCS\Install\ccs\ccs_base\msp430\lib\FR59xx\MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib
+    F:\ccs\ccs\ccs\ccs_base\msp430\lib\FR59xx\MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib
        mpu_init.o                   44      0         0      
     +--+----------------------------+-------+---------+---------+
        Total:                       44      0         0      
                                                              
-    D:\CCS\Install\ccs\tools\compiler\ti-cgt-msp430_20.2.2.LTS\lib\rts430x_lc_rd_eabi.lib
+    F:\ccs\ccs\ccs\tools\compiler\ti-cgt-msp430_20.2.2.LTS\lib\rts430x_lc_rd_eabi.lib
        frcdivd.c.obj                1126    0         0      
        addd.c.obj                   736     0         0      
        frcmpyd.c.obj                640     0         0      
@@ -482,7 +477,6 @@ MODULE SUMMARY
        divd.c.obj                   546     0         0      
        s_ceil.c.obj                 454     0         0      
        s_floor.c.obj                452     0         0      
-       trgmsg.c.obj                 104     0         288    
        s_round.c.obj                262     0         0      
        cmpd.c.obj                   216     0         0      
        renormd.c.obj                178     0         0      
@@ -490,9 +484,7 @@ MODULE SUMMARY
        fltuld.c.obj                 128     0         0      
        copy_decompress_lzss.c.obj   118     0         0      
        fixdul.c.obj                 104     0         0      
-       rand.c.obj                   86      0         4      
        div32u.asm.obj               88      0         0      
-       hosttime.c.obj               86      0         0      
        autoinit.c.obj               84      0         0      
        asr32.asm.obj                78      0         0      
        lsl32.asm.obj                78      0         0      
@@ -505,7 +497,6 @@ MODULE SUMMARY
        mult32_f5hw.asm.obj          36      0         0      
        boot.c.obj                   32      2         0      
        mult16_f5hw.asm.obj          24      0         0      
-       time.c.obj                   24      0         0      
        div16u.asm.obj               22      0         0      
        memset.c.obj                 22      0         0      
        memcpy.c.obj                 20      0         0      
@@ -513,9 +504,7 @@ MODULE SUMMARY
        fixdu.c.obj                  18      0         0      
        strlen.c.obj                 14      0         0      
        fltid.c.obj                  12      0         0      
-       _lock.c.obj                  2       0         8      
        lsl16.asm.obj                10      0         0      
-       hostopen.c.obj               0       0         8      
        isr_trap.asm.obj             8       0         0      
        exit.c.obj                   6       0         0      
        fltud.c.obj                  6       0         0      
@@ -544,24 +533,24 @@ MODULE SUMMARY
        int54.asm.obj                0       2         0      
        startup.c.obj                2       0         0      
     +--+----------------------------+-------+---------+---------+
-       Total:                       7518    46        308    
+       Total:                       7216    46        0      
                                                              
        Stack:                       0       0         160    
-       Linker Generated:            0       76        0      
+       Linker Generated:            0       65        0      
     +--+----------------------------+-------+---------+---------+
-       Grand Total:                 17902   910       1326   
+       Grand Total:                 17704   910       1021   
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00005140 records: 2, size/record: 8, table size: 16
-	.data: load addr=00005104, load size=0000002a bytes, run addr=00001f2c, run size=00000042 bytes, compression=lzss
-	.bss: load addr=0000513a, load size=00000006 bytes, run addr=00001c00, run size=0000032c bytes, compression=zero_init
+__TI_cinit_table @ 00004c7c records: 2, size/record: 8, table size: 16
+	.data: load addr=00004c4a, load size=0000001f bytes, run addr=00001f2a, run size=00000034 bytes, compression=lzss
+	.bss: load addr=00004c76, load size=00000006 bytes, run addr=00001c00, run size=00000329 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 0000512e records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 00004c6a records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_zero_init
 	index: 1, handler: __TI_decompress_lzss
 	index: 2, handler: __TI_decompress_none
@@ -571,8 +560,8 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 address   name                                   
 -------   ----                                   
-00004ac4  ACK_Configure                          
-00001f20  ACK_buffer                             
+000045e6  ACK_Configure                          
+00001f18  ACK_buffer                             
 00000800  ADC12CTL0                              
 00000801  ADC12CTL0_H                            
 00000800  ADC12CTL0_L                            
@@ -830,11 +819,10 @@ address   name
 000009ce  AESAXIN_L                              
 000004be  BCD2BIN                                
 000004bc  BIN2BCD                                
-00004d30  BoardInitMcu                           
-00012108  BoardIoInit                            
-00004d4c  BoardIoIrqInit                         
-00004dd0  C$$EXIT                                
-00013de8  C$$IO$$                                
+00004866  BoardInitMcu                           
+00012170  BoardIoInit                            
+00004882  BoardIoIrqInit                         
+00004906  C$$EXIT                                
 0000043e  CAPTIO0CTL                             
 0000043f  CAPTIO0CTL_H                           
 0000043e  CAPTIO0CTL_L                           
@@ -892,14 +880,14 @@ address   name
 0000016c  CSCTL6                                 
 0000016d  CSCTL6_H                               
 0000016c  CSCTL6_L                               
-00004ce0  CS_disableClockRequest                 
-00004b24  CS_getACLK                             
-00004c16  CS_getMCLK                             
-00013fde  CS_getSMCLK                            
-00013514  CS_initClockSignal                     
-00012a52  CS_setDCOFreq                          
-00013650  ClockInit                              
-00012fe0  ClockSet                               
+00004816  CS_disableClockRequest                 
+00013fda  CS_getACLK                             
+0000474e  CS_getMCLK                             
+000046d2  CS_getSMCLK                            
+0001357c  CS_initClockSignal                     
+00012aba  CS_setDCOFreq                          
+000136b8  ClockInit                              
+00013048  ClockSet                               
 00000510  DMA0CTL                                
 00000516  DMA0DA                                 
 00000518  DMA0DAH                                
@@ -930,34 +918,36 @@ address   name
 00000506  DMACTL3                                
 00000508  DMACTL4                                
 0000050e  DMAIV                                  
-00004930  EUSCIB0_IRQHandler                     
-00004db2  EUSCI_A_UART_enable                    
-00013126  EUSCI_A_UART_init                      
-00004a80  EUSCI_A_UART_transmitData              
-00004db8  EUSCI_B_SPI_enable                     
-00004d58  EUSCI_B_SPI_enableInterrupt            
-00004d94  EUSCI_B_SPI_getInterruptStatus         
-0001387e  EUSCI_B_SPI_initMaster                 
+00004522  EUSCIB0_IRQHandler                     
+000048e8  EUSCI_A_UART_enable                    
+0001318e  EUSCI_A_UART_init                      
+000045c4  EUSCI_A_UART_transmitData              
+000048ee  EUSCI_B_SPI_enable                     
+0000488e  EUSCI_B_SPI_enableInterrupt            
+000048ca  EUSCI_B_SPI_getInterruptStatus         
+0001388a  EUSCI_B_SPI_initMaster                 
 00000140  FRCTL0                                 
 00000141  FRCTL0_H                               
 00000140  FRCTL0_L                               
-00004eae  FskBandwidths                          
+00004a14  FskBandwidths                          
 00000144  GCCTL0                                 
 00000145  GCCTL0_H                               
 00000144  GCCTL0_L                               
 00000146  GCCTL1                                 
 00000147  GCCTL1_H                               
 00000146  GCCTL1_L                               
-00004b42  GPIO_clearInterrupt                    
-00004b60  GPIO_enableInterrupt                   
-00013f52  GPIO_getInterruptStatus                
-00013f82  GPIO_selectInterruptEdge               
-00013a22  GPIO_setAsInputPinWithPullDownResistor 
-00013ab6  GpioInit                               
-00013772  GpioSetInterrupt                       
-00004d9e  GpioToggle                             
-00004bb6  GpioWrite                              
-000138d4  HOSTtime                               
+00004626  GPIO_clearInterrupt                    
+00004644  GPIO_enableInterrupt                   
+00013ea0  GPIO_getInterruptStatus                
+00013ed0  GPIO_selectInterruptEdge               
+00013a2c  GPIO_setAsInputPinWithPullDownResistor 
+00013d6e  GPIO_setAsOutputPin                    
+00004662  GPIO_setOutputHighOnPin                
+0000467e  GPIO_setOutputLowOnPin                 
+00013ac0  GpioInit                               
+0001377e  GpioSetInterrupt                       
+000048d4  GpioToggle                             
+00004706  GpioWrite                              
 000004c4  MAC                                    
 000004da  MAC32H                                 
 000004db  MAC32H_H                               
@@ -976,7 +966,7 @@ address   name
 000004c6  MACS_L                                 
 000004c5  MAC_H                                  
 000004c4  MAC_L                                  
-00001f6c  MCU_State                              
+00001f5a  MCU_State                              
 000005a0  MPUCTL0                                
 000005a1  MPUCTL0_H                              
 000005a0  MPUCTL0_L                              
@@ -1125,8 +1115,8 @@ address   name
 0000012a  PMMIFG                                 
 0000012b  PMMIFG_H                               
 0000012a  PMMIFG_L                               
-00004dbe  PMM_unlockLPM5                         
-000048e2  PORT4_IRQHandler                       
+000048f4  PMM_unlockLPM5                         
+000044d4  PORT4_IRQHandler                       
 000001b0  REFCTL0                                
 000001b1  REFCTL0_H                              
 000001b0  REFCTL0_L                              
@@ -1182,7 +1172,8 @@ address   name
 000004b6  RTCYEAR                                
 000004b7  RTCYEAR_H                              
 000004b6  RTCYEAR_L                              
-00004fca  RadioRegsInit                          
+00004aec  RadioRegsInit                          
+00001f1a  RandomCnt                              
 00001ec4  SD_PHY                                 
 00000100  SFRIE1                                 
 00000101  SFRIE1_H                               
@@ -1193,46 +1184,46 @@ address   name
 00000104  SFRRPCR                                
 00000105  SFRRPCR_H                              
 00000104  SFRRPCR_L                              
-00001f26  SPI_RXData_LoRa                        
+00001f22  SPI_RXData_LoRa                        
 000004ce  SUMEXT                                 
 000004cf  SUMEXT_H                               
 000004ce  SUMEXT_L                               
 00001e00  SX1276                                 
-00004ddc  SX1276CheckRfFrequency                 
-00004bce  SX1276GetPaSelect                      
-00004dc4  SX1276GetStatus                        
-000113ce  SX1276GetTimeOnAir                     
-000136b4  SX1276Init                             
-00013c4e  SX1276IsChannelFree                    
-000137cc  SX1276Random                           
-00004cf0  SX1276Read                             
-00013a6c  SX1276ReadBuffer                       
-000139d2  SX1276ReadRssi                         
-00013e22  SX1276ReceivePayload                   
-00004a10  SX1276Reset                            
-000134a4  SX1276Send                             
-0001392a  SX1276SetChannel                       
-00004b7e  SX1276SetIRQFlagMask                   
-00013e56  SX1276SetMaxPayloadLength              
-00013432  SX1276SetModem                         
-00004b9a  SX1276SetOpMode                        
-00011054  SX1276SetRx                            
-00010c96  SX1276SetRxConfig                      
-00004d64  SX1276SetSleep                         
-00004d70  SX1276SetStby                          
-00013b8c  SX1276SetTx                            
-00010466  SX1276SetTxConfig                      
-00013d46  SX1276StartCad                         
-00004c98  SX1276Write                            
-00013b46  SX1276WriteBuffer                      
-00004d7c  SX1276WriteFifo                        
-00004de4  SX1276_CadDone                         
-00004de6  SX1276_FhssChangeChannel               
-00004de8  SX1276_OnRxDone                        
-00004dea  SX1276_OnRxError                       
-00004dec  SX1276_OnRxTimeout                     
-00004dee  SX1276_OnTxDone                        
-00004df0  SX1276_OnTxTimeout                     
+00004918  SX1276CheckRfFrequency                 
+0000471e  SX1276GetPaSelect                      
+000048fa  SX1276GetStatus                        
+00011436  SX1276GetTimeOnAir                     
+0001371c  SX1276Init                             
+00013bd0  SX1276IsChannelFree                    
+000137d8  SX1276Random                           
+00004826  SX1276Read                             
+00013a76  SX1276ReadBuffer                       
+000139dc  SX1276ReadRssi                         
+00013da2  SX1276ReceivePayload                   
+00013fb2  SX1276Reset                            
+0001350c  SX1276Send                             
+000138e0  SX1276SetChannel                       
+0000469a  SX1276SetIRQFlagMask                   
+00013dd6  SX1276SetMaxPayloadLength              
+0001349a  SX1276SetModem                         
+000046b6  SX1276SetOpMode                        
+000110bc  SX1276SetRx                            
+00010cfe  SX1276SetRxConfig                      
+0000489a  SX1276SetSleep                         
+000048a6  SX1276SetStby                          
+00013b4e  SX1276SetTx                            
+000108c8  SX1276SetTxConfig                      
+00013cc8  SX1276StartCad                         
+000047ce  SX1276Write                            
+00013b08  SX1276WriteBuffer                      
+000048b2  SX1276WriteFifo                        
+00004920  SX1276_CadDone                         
+00004922  SX1276_FhssChangeChannel               
+00004924  SX1276_OnRxDone                        
+00004926  SX1276_OnRxError                       
+00004928  SX1276_OnRxTimeout                     
+0000492a  SX1276_OnTxDone                        
+0000492c  SX1276_OnTxTimeout                     
 00000180  SYSCTL                                 
 00000181  SYSCTL_H                               
 00000180  SYSCTL_L                               
@@ -1260,8 +1251,8 @@ address   name
 0000019a  SYSUNIV                                
 0000019b  SYSUNIV_H                              
 0000019a  SYSUNIV_L                              
-00004c2c  SpiInOut_LoRa                          
-000131c0  SpiInit                                
+00004764  SpiInOut_LoRa                          
+00013228  SpiInit                                
 00000352  TA0CCR0                                
 00000354  TA0CCR1                                
 00000356  TA0CCR2                                
@@ -1316,8 +1307,8 @@ address   name
 000003e0  TB0EX0                                 
 000003ee  TB0IV                                  
 000003d0  TB0R                                   
-00004800  TIMER0_A0_ISR                          
-000132cc  Timer_A_initUpMode                     
+00004400  TIMER0_A0_ISR                          
+00013334  Timer_A_initUpMode                     
 000005d0  UCA0ABCTL                              
 000005c6  UCA0BRW                                
 000005c7  UCA0BRW_H                              
@@ -1430,21 +1421,20 @@ address   name
 0000015c  WDTCTL                                 
 0000015d  WDTCTL_H                               
 0000015c  WDTCTL_L                               
-00004ae4  WDT_A_hold                             
-00004400  _CIOBUF_                               
+00004606  WDT_A_hold                             
 00002400  __STACK_END                            
 000000a0  __STACK_SIZE                           
-00005140  __TI_CINIT_Base                        
-00005150  __TI_CINIT_Limit                       
-0000512e  __TI_Handler_Table_Base                
-0000513a  __TI_Handler_Table_Limit               
-00004982  __TI_ISR_TRAP                          
-0001397e  __TI_auto_init_nobinit_nopinit_hold_wdt
-00013348  __TI_decompress_lzss                   
-00004cbc  __TI_decompress_none                   
-00011ec0  __TI_frcaddd                           
+00004c7c  __TI_CINIT_Base                        
+00004c8c  __TI_CINIT_Limit                       
+00004c6a  __TI_Handler_Table_Base                
+00004c76  __TI_Handler_Table_Limit               
+00004574  __TI_ISR_TRAP                          
+00013934  __TI_auto_init_nobinit_nopinit_hold_wdt
+000133b0  __TI_decompress_lzss                   
+000047f2  __TI_decompress_none                   
+00011f28  __TI_frcaddd                           
 00010000  __TI_frcdivd                           
-000119da  __TI_frcmpyd                           
+00011a42  __TI_frcmpyd                           
 0000ffcc  __TI_int30                             
 0000ffce  __TI_int31                             
 0000ffd0  __TI_int32                             
@@ -1473,140 +1463,131 @@ address   name
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
-00013e8a  __TI_readmsg                           
-00012f2e  __TI_renormd                           
-00013db6  __TI_writemsg                          
-00004a38  __TI_zero_init_nomemset                
+00012f96  __TI_renormd                           
+0000457c  __TI_zero_init_nomemset                
 ffffffff  __c_args__                             
 00000001  __mpu_enable                           
-000049b8  __mpu_init                             
-000116fa  __mspabi_addd                          
-00012e56  __mspabi_cmpd                          
-0001232a  __mspabi_divd                          
-000049e4  __mspabi_divi                          
-00013c0e  __mspabi_divli                         
-00004c58  __mspabi_divu                          
-00013826  __mspabi_divul                         
-00004caa  __mspabi_fixdu                         
-000135e8  __mspabi_fixdul                        
-00004d88  __mspabi_fltid                         
-00013088  __mspabi_fltlid                        
-00004dca  __mspabi_fltud                         
-0001324c  __mspabi_fltuld                        
-00011c5a  __mspabi_mpyd                          
-00004bfe  __mspabi_mpyi_f5hw                     
-00004a5c  __mspabi_mpyl_f5hw                     
-00013fb0  __mspabi_negd                          
-000049e4  __mspabi_remi                          
-00013c0e  __mspabi_remli                         
-00004c58  __mspabi_remu                          
-00013826  __mspabi_remul                         
-00004da8  __mspabi_slli                          
-00004d10  __mspabi_slll                          
-00013d02  __mspabi_slll_1                        
-00013cde  __mspabi_slll_10                       
-00013cda  __mspabi_slll_11                       
-00013cd6  __mspabi_slll_12                       
-00013cd2  __mspabi_slll_13                       
-00013cce  __mspabi_slll_14                       
-00013cca  __mspabi_slll_15                       
-00013cfe  __mspabi_slll_2                        
-00013cfa  __mspabi_slll_3                        
-00013cf6  __mspabi_slll_4                        
-00013cf2  __mspabi_slll_5                        
-00013cee  __mspabi_slll_6                        
-00013cea  __mspabi_slll_7                        
-00013ce6  __mspabi_slll_8                        
-00013ce2  __mspabi_slll_9                        
-00004d00  __mspabi_sral                          
-00013cc4  __mspabi_sral_1                        
-00013ca0  __mspabi_sral_10                       
-00013c9c  __mspabi_sral_11                       
-00013c98  __mspabi_sral_12                       
-00013c94  __mspabi_sral_13                       
-00013c90  __mspabi_sral_14                       
-00013c8c  __mspabi_sral_15                       
-00013cc0  __mspabi_sral_2                        
-00013cbc  __mspabi_sral_3                        
-00013cb8  __mspabi_sral_4                        
-00013cb4  __mspabi_sral_5                        
-00013cb0  __mspabi_sral_6                        
-00013cac  __mspabi_sral_7                        
-00013ca8  __mspabi_sral_8                        
-00013ca4  __mspabi_sral_9                        
-00004d20  __mspabi_srll                          
-00013d40  __mspabi_srll_1                        
-00013d1c  __mspabi_srll_10                       
-00013d18  __mspabi_srll_11                       
-00013d14  __mspabi_srll_12                       
-00013d10  __mspabi_srll_13                       
-00013d0c  __mspabi_srll_14                       
-00013d08  __mspabi_srll_15                       
-00013d3c  __mspabi_srll_2                        
-00013d38  __mspabi_srll_3                        
-00013d34  __mspabi_srll_4                        
-00013d30  __mspabi_srll_5                        
-00013d2c  __mspabi_srll_6                        
-00013d28  __mspabi_srll_7                        
-00013d24  __mspabi_srll_8                        
-00013d20  __mspabi_srll_9                        
-00013ebc  __mspabi_subd                          
-00004be6  __time32                               
-00004962  _c_int00_noargs_mpu                    
-00001f58  _lock                                  
-00004df2  _nop                                   
+00013f5a  __mpu_init                             
+00011762  __mspabi_addd                          
+00012ebe  __mspabi_cmpd                          
+00012392  __mspabi_divd                          
+00013f86  __mspabi_divi                          
+00013b90  __mspabi_divli                         
+00004790  __mspabi_divu                          
+00013832  __mspabi_divul                         
+000047e0  __mspabi_fixdu                         
+00013650  __mspabi_fixdul                        
+000048be  __mspabi_fltid                         
+000130f0  __mspabi_fltlid                        
+00004900  __mspabi_fltud                         
+000132b4  __mspabi_fltuld                        
+00011cc2  __mspabi_mpyd                          
+00004736  __mspabi_mpyi_f5hw                     
+000045a0  __mspabi_mpyl_f5hw                     
+00013efe  __mspabi_negd                          
+00013f86  __mspabi_remi                          
+00013b90  __mspabi_remli                         
+00004790  __mspabi_remu                          
+00013832  __mspabi_remul                         
+000048de  __mspabi_slli                          
+00004846  __mspabi_slll                          
+00013c84  __mspabi_slll_1                        
+00013c60  __mspabi_slll_10                       
+00013c5c  __mspabi_slll_11                       
+00013c58  __mspabi_slll_12                       
+00013c54  __mspabi_slll_13                       
+00013c50  __mspabi_slll_14                       
+00013c4c  __mspabi_slll_15                       
+00013c80  __mspabi_slll_2                        
+00013c7c  __mspabi_slll_3                        
+00013c78  __mspabi_slll_4                        
+00013c74  __mspabi_slll_5                        
+00013c70  __mspabi_slll_6                        
+00013c6c  __mspabi_slll_7                        
+00013c68  __mspabi_slll_8                        
+00013c64  __mspabi_slll_9                        
+00004836  __mspabi_sral                          
+00013c46  __mspabi_sral_1                        
+00013c22  __mspabi_sral_10                       
+00013c1e  __mspabi_sral_11                       
+00013c1a  __mspabi_sral_12                       
+00013c16  __mspabi_sral_13                       
+00013c12  __mspabi_sral_14                       
+00013c0e  __mspabi_sral_15                       
+00013c42  __mspabi_sral_2                        
+00013c3e  __mspabi_sral_3                        
+00013c3a  __mspabi_sral_4                        
+00013c36  __mspabi_sral_5                        
+00013c32  __mspabi_sral_6                        
+00013c2e  __mspabi_sral_7                        
+00013c2a  __mspabi_sral_8                        
+00013c26  __mspabi_sral_9                        
+00004856  __mspabi_srll                          
+00013cc2  __mspabi_srll_1                        
+00013c9e  __mspabi_srll_10                       
+00013c9a  __mspabi_srll_11                       
+00013c96  __mspabi_srll_12                       
+00013c92  __mspabi_srll_13                       
+00013c8e  __mspabi_srll_14                       
+00013c8a  __mspabi_srll_15                       
+00013cbe  __mspabi_srll_2                        
+00013cba  __mspabi_srll_3                        
+00013cb6  __mspabi_srll_4                        
+00013cb2  __mspabi_srll_5                        
+00013cae  __mspabi_srll_6                        
+00013caa  __mspabi_srll_7                        
+00013ca6  __mspabi_srll_8                        
+00013ca2  __mspabi_srll_9                        
+00013e0a  __mspabi_subd                          
+00004554  _c_int00_noargs_mpu                    
 0000fffe  _reset_vector                          
 00002360  _stack                                 
-00004df4  _system_post_cinit                     
-00004de0  _system_pre_init                       
-00001f5c  _unlock                                
-00004dd0  abort                                  
-0001254c  ceil                                   
-0001254c  ceill                                  
-0000498a  crc8                                   
-00013dec  crc8_check                             
-00013d7e  delay_ms                               
-00013eee  delay_us                               
-00001f27  done_flag                              
-00001f28  duty_flag                              
-00004aa2  endtimer_sleep                         
-00012712  floor                                  
-00012712  floorl                                 
-00004800  fram_ipe_end                           
-00004800  fram_ipe_start                         
+0000492e  _system_post_cinit                     
+0000491c  _system_pre_init                       
+00004906  abort                                  
+00001f23  broadcast_flag                         
+000125b4  ceil                                   
+000125b4  ceill                                  
+00013f2c  crc8                                   
+00013d38  crc8_check                             
+00013d00  delay_ms                               
+00013e3c  delay_us                               
+00001f24  done_flag                              
+00001f25  duty_flag                              
+000046ec  endtimer_sleep                         
+0001277a  floor                                  
+0001277a  floorl                                 
+00004400  fram_ipe_end                           
+00004400  fram_ipe_start                         
 00004400  fram_rw_start                          
-00004800  fram_rx_start                          
-000133be  initUART                               
-00004cce  main                                   
-00004c84  memcpy                                 
-00004c42  memset                                 
+00004400  fram_rx_start                          
+00013426  initUART                               
+00004804  main                                   
+000047a6  memcpy                                 
+0000477a  memset                                 
 0000a501  mpu_ctl0_value                         
 00001513  mpu_sam_value                          
-00000480  mpu_segment_border1                    
-00000480  mpu_segment_border2                    
-00001f6a  packet_size                            
-00001f14  parmbuf                                
-00013bce  rand                                   
-00001f22  random_num                             
-00012b92  round                                  
-00012b92  roundl                                 
-00001f24  send_buffer                            
-00004dd6  settimer_sleep                         
-00004b04  settimer_wait                          
-00001f29  sleep_flag                             
-00004c6e  srand                                  
-00004d3e  strlen                                 
-00001f2c  sx1276                                 
-00004f32  sx1276Radio                            
-00001f68  tag                                    
-0001089c  task_lora_test                         
-00004be6  time                                   
-00013afe  timerinitial                           
-00001f2a  timerstart_sleep                       
-00001f2b  timerstart_wait                        
-00001f6b  transmit_cnt_2                         
-00013716  uart_printNum                          
-00013f20  uart_write                             
+00000440  mpu_segment_border1                    
+00000440  mpu_segment_border2                    
+00001f5d  packet_size                            
+00001f1c  random_num                             
+00012bfa  round                                  
+00012bfa  roundl                                 
+00001f1e  send_buffer                            
+0000490c  set_tag                                
+00004912  settimer_sleep                         
+000047ba  settimer_wait                          
+00001f26  sleep_flag                             
+00004874  strlen                                 
+00001f2a  sx1276                                 
+00004a98  sx1276Radio                            
+00001f20  tag                                    
+00010466  task_lora_test                         
+00013988  timerinitial                           
+00001f27  timerstart_sleep                       
+00001f28  timerstart_wait                        
+00001f5c  transmit_cnt_2                         
+00013e6e  uart_write                             
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -1843,6 +1824,8 @@ address   name
 0000043e  CAPTIO0CTL_L                           
 0000043f  CAPTIO0CTL_H                           
 00000440  TA3CTL                                 
+00000440  mpu_segment_border1                    
+00000440  mpu_segment_border2                    
 00000442  TA3CCTL0                               
 00000444  TA3CCTL1                               
 00000450  TA3R                                   
@@ -1853,8 +1836,6 @@ address   name
 0000047e  CAPTIO1CTL                             
 0000047e  CAPTIO1CTL_L                           
 0000047f  CAPTIO1CTL_H                           
-00000480  mpu_segment_border1                    
-00000480  mpu_segment_border2                    
 000004a0  RTCCTL01                               
 000004a0  RTCCTL01_L                             
 000004a1  RTCCTL01_H                             
@@ -2399,110 +2380,102 @@ address   name
 00001513  mpu_sam_value                          
 00001e00  SX1276                                 
 00001ec4  SD_PHY                                 
-00001f14  parmbuf                                
-00001f20  ACK_buffer                             
-00001f22  random_num                             
-00001f24  send_buffer                            
-00001f26  SPI_RXData_LoRa                        
-00001f27  done_flag                              
-00001f28  duty_flag                              
-00001f29  sleep_flag                             
-00001f2a  timerstart_sleep                       
-00001f2b  timerstart_wait                        
-00001f2c  sx1276                                 
-00001f58  _lock                                  
-00001f5c  _unlock                                
-00001f68  tag                                    
-00001f6a  packet_size                            
-00001f6b  transmit_cnt_2                         
-00001f6c  MCU_State                              
+00001f18  ACK_buffer                             
+00001f1a  RandomCnt                              
+00001f1c  random_num                             
+00001f1e  send_buffer                            
+00001f20  tag                                    
+00001f22  SPI_RXData_LoRa                        
+00001f23  broadcast_flag                         
+00001f24  done_flag                              
+00001f25  duty_flag                              
+00001f26  sleep_flag                             
+00001f27  timerstart_sleep                       
+00001f28  timerstart_wait                        
+00001f2a  sx1276                                 
+00001f5a  MCU_State                              
+00001f5c  transmit_cnt_2                         
+00001f5d  packet_size                            
 00002360  _stack                                 
 00002400  __STACK_END                            
-00004400  _CIOBUF_                               
+00004400  TIMER0_A0_ISR                          
+00004400  fram_ipe_end                           
+00004400  fram_ipe_start                         
 00004400  fram_rw_start                          
-00004800  TIMER0_A0_ISR                          
-00004800  fram_ipe_end                           
-00004800  fram_ipe_start                         
-00004800  fram_rx_start                          
-000048e2  PORT4_IRQHandler                       
-00004930  EUSCIB0_IRQHandler                     
-00004962  _c_int00_noargs_mpu                    
-00004982  __TI_ISR_TRAP                          
-0000498a  crc8                                   
-000049b8  __mpu_init                             
-000049e4  __mspabi_divi                          
-000049e4  __mspabi_remi                          
-00004a10  SX1276Reset                            
-00004a38  __TI_zero_init_nomemset                
-00004a5c  __mspabi_mpyl_f5hw                     
-00004a80  EUSCI_A_UART_transmitData              
-00004aa2  endtimer_sleep                         
-00004ac4  ACK_Configure                          
-00004ae4  WDT_A_hold                             
-00004b04  settimer_wait                          
-00004b24  CS_getACLK                             
-00004b42  GPIO_clearInterrupt                    
-00004b60  GPIO_enableInterrupt                   
-00004b7e  SX1276SetIRQFlagMask                   
-00004b9a  SX1276SetOpMode                        
-00004bb6  GpioWrite                              
-00004bce  SX1276GetPaSelect                      
-00004be6  __time32                               
-00004be6  time                                   
-00004bfe  __mspabi_mpyi_f5hw                     
-00004c16  CS_getMCLK                             
-00004c2c  SpiInOut_LoRa                          
-00004c42  memset                                 
-00004c58  __mspabi_divu                          
-00004c58  __mspabi_remu                          
-00004c6e  srand                                  
-00004c84  memcpy                                 
-00004c98  SX1276Write                            
-00004caa  __mspabi_fixdu                         
-00004cbc  __TI_decompress_none                   
-00004cce  main                                   
-00004ce0  CS_disableClockRequest                 
-00004cf0  SX1276Read                             
-00004d00  __mspabi_sral                          
-00004d10  __mspabi_slll                          
-00004d20  __mspabi_srll                          
-00004d30  BoardInitMcu                           
-00004d3e  strlen                                 
-00004d4c  BoardIoIrqInit                         
-00004d58  EUSCI_B_SPI_enableInterrupt            
-00004d64  SX1276SetSleep                         
-00004d70  SX1276SetStby                          
-00004d7c  SX1276WriteFifo                        
-00004d88  __mspabi_fltid                         
-00004d94  EUSCI_B_SPI_getInterruptStatus         
-00004d9e  GpioToggle                             
-00004da8  __mspabi_slli                          
-00004db2  EUSCI_A_UART_enable                    
-00004db8  EUSCI_B_SPI_enable                     
-00004dbe  PMM_unlockLPM5                         
-00004dc4  SX1276GetStatus                        
-00004dca  __mspabi_fltud                         
-00004dd0  C$$EXIT                                
-00004dd0  abort                                  
-00004dd6  settimer_sleep                         
-00004ddc  SX1276CheckRfFrequency                 
-00004de0  _system_pre_init                       
-00004de4  SX1276_CadDone                         
-00004de6  SX1276_FhssChangeChannel               
-00004de8  SX1276_OnRxDone                        
-00004dea  SX1276_OnRxError                       
-00004dec  SX1276_OnRxTimeout                     
-00004dee  SX1276_OnTxDone                        
-00004df0  SX1276_OnTxTimeout                     
-00004df2  _nop                                   
-00004df4  _system_post_cinit                     
-00004eae  FskBandwidths                          
-00004f32  sx1276Radio                            
-00004fca  RadioRegsInit                          
-0000512e  __TI_Handler_Table_Base                
-0000513a  __TI_Handler_Table_Limit               
-00005140  __TI_CINIT_Base                        
-00005150  __TI_CINIT_Limit                       
+00004400  fram_rx_start                          
+000044d4  PORT4_IRQHandler                       
+00004522  EUSCIB0_IRQHandler                     
+00004554  _c_int00_noargs_mpu                    
+00004574  __TI_ISR_TRAP                          
+0000457c  __TI_zero_init_nomemset                
+000045a0  __mspabi_mpyl_f5hw                     
+000045c4  EUSCI_A_UART_transmitData              
+000045e6  ACK_Configure                          
+00004606  WDT_A_hold                             
+00004626  GPIO_clearInterrupt                    
+00004644  GPIO_enableInterrupt                   
+00004662  GPIO_setOutputHighOnPin                
+0000467e  GPIO_setOutputLowOnPin                 
+0000469a  SX1276SetIRQFlagMask                   
+000046b6  SX1276SetOpMode                        
+000046d2  CS_getSMCLK                            
+000046ec  endtimer_sleep                         
+00004706  GpioWrite                              
+0000471e  SX1276GetPaSelect                      
+00004736  __mspabi_mpyi_f5hw                     
+0000474e  CS_getMCLK                             
+00004764  SpiInOut_LoRa                          
+0000477a  memset                                 
+00004790  __mspabi_divu                          
+00004790  __mspabi_remu                          
+000047a6  memcpy                                 
+000047ba  settimer_wait                          
+000047ce  SX1276Write                            
+000047e0  __mspabi_fixdu                         
+000047f2  __TI_decompress_none                   
+00004804  main                                   
+00004816  CS_disableClockRequest                 
+00004826  SX1276Read                             
+00004836  __mspabi_sral                          
+00004846  __mspabi_slll                          
+00004856  __mspabi_srll                          
+00004866  BoardInitMcu                           
+00004874  strlen                                 
+00004882  BoardIoIrqInit                         
+0000488e  EUSCI_B_SPI_enableInterrupt            
+0000489a  SX1276SetSleep                         
+000048a6  SX1276SetStby                          
+000048b2  SX1276WriteFifo                        
+000048be  __mspabi_fltid                         
+000048ca  EUSCI_B_SPI_getInterruptStatus         
+000048d4  GpioToggle                             
+000048de  __mspabi_slli                          
+000048e8  EUSCI_A_UART_enable                    
+000048ee  EUSCI_B_SPI_enable                     
+000048f4  PMM_unlockLPM5                         
+000048fa  SX1276GetStatus                        
+00004900  __mspabi_fltud                         
+00004906  C$$EXIT                                
+00004906  abort                                  
+0000490c  set_tag                                
+00004912  settimer_sleep                         
+00004918  SX1276CheckRfFrequency                 
+0000491c  _system_pre_init                       
+00004920  SX1276_CadDone                         
+00004922  SX1276_FhssChangeChannel               
+00004924  SX1276_OnRxDone                        
+00004926  SX1276_OnRxError                       
+00004928  SX1276_OnRxTimeout                     
+0000492a  SX1276_OnTxDone                        
+0000492c  SX1276_OnTxTimeout                     
+0000492e  _system_post_cinit                     
+00004a14  FskBandwidths                          
+00004a98  sx1276Radio                            
+00004aec  RadioRegsInit                          
+00004c6a  __TI_Handler_Table_Base                
+00004c76  __TI_Handler_Table_Limit               
+00004c7c  __TI_CINIT_Base                        
+00004c8c  __TI_CINIT_Limit                       
 0000a501  mpu_ctl0_value                         
 0000ffcc  __TI_int30                             
 0000ffce  __TI_int31                             
@@ -2531,123 +2504,123 @@ address   name
 0000fffc  __TI_int54                             
 0000fffe  _reset_vector                          
 00010000  __TI_frcdivd                           
-00010466  SX1276SetTxConfig                      
-0001089c  task_lora_test                         
-00010c96  SX1276SetRxConfig                      
-00011054  SX1276SetRx                            
-000113ce  SX1276GetTimeOnAir                     
-000116fa  __mspabi_addd                          
-000119da  __TI_frcmpyd                           
-00011c5a  __mspabi_mpyd                          
-00011ec0  __TI_frcaddd                           
-00012108  BoardIoInit                            
-0001232a  __mspabi_divd                          
-0001254c  ceil                                   
-0001254c  ceill                                  
-00012712  floor                                  
-00012712  floorl                                 
-00012a52  CS_setDCOFreq                          
-00012b92  round                                  
-00012b92  roundl                                 
-00012e56  __mspabi_cmpd                          
-00012f2e  __TI_renormd                           
-00012fe0  ClockSet                               
-00013088  __mspabi_fltlid                        
-00013126  EUSCI_A_UART_init                      
-000131c0  SpiInit                                
-0001324c  __mspabi_fltuld                        
-000132cc  Timer_A_initUpMode                     
-00013348  __TI_decompress_lzss                   
-000133be  initUART                               
-00013432  SX1276SetModem                         
-000134a4  SX1276Send                             
-00013514  CS_initClockSignal                     
-000135e8  __mspabi_fixdul                        
-00013650  ClockInit                              
-000136b4  SX1276Init                             
-00013716  uart_printNum                          
-00013772  GpioSetInterrupt                       
-000137cc  SX1276Random                           
-00013826  __mspabi_divul                         
-00013826  __mspabi_remul                         
-0001387e  EUSCI_B_SPI_initMaster                 
-000138d4  HOSTtime                               
-0001392a  SX1276SetChannel                       
-0001397e  __TI_auto_init_nobinit_nopinit_hold_wdt
-000139d2  SX1276ReadRssi                         
-00013a22  GPIO_setAsInputPinWithPullDownResistor 
-00013a6c  SX1276ReadBuffer                       
-00013ab6  GpioInit                               
-00013afe  timerinitial                           
-00013b46  SX1276WriteBuffer                      
-00013b8c  SX1276SetTx                            
-00013bce  rand                                   
-00013c0e  __mspabi_divli                         
-00013c0e  __mspabi_remli                         
-00013c4e  SX1276IsChannelFree                    
-00013c8c  __mspabi_sral_15                       
-00013c90  __mspabi_sral_14                       
-00013c94  __mspabi_sral_13                       
-00013c98  __mspabi_sral_12                       
-00013c9c  __mspabi_sral_11                       
-00013ca0  __mspabi_sral_10                       
-00013ca4  __mspabi_sral_9                        
-00013ca8  __mspabi_sral_8                        
-00013cac  __mspabi_sral_7                        
-00013cb0  __mspabi_sral_6                        
-00013cb4  __mspabi_sral_5                        
-00013cb8  __mspabi_sral_4                        
-00013cbc  __mspabi_sral_3                        
-00013cc0  __mspabi_sral_2                        
-00013cc4  __mspabi_sral_1                        
-00013cca  __mspabi_slll_15                       
-00013cce  __mspabi_slll_14                       
-00013cd2  __mspabi_slll_13                       
-00013cd6  __mspabi_slll_12                       
-00013cda  __mspabi_slll_11                       
-00013cde  __mspabi_slll_10                       
-00013ce2  __mspabi_slll_9                        
-00013ce6  __mspabi_slll_8                        
-00013cea  __mspabi_slll_7                        
-00013cee  __mspabi_slll_6                        
-00013cf2  __mspabi_slll_5                        
-00013cf6  __mspabi_slll_4                        
-00013cfa  __mspabi_slll_3                        
-00013cfe  __mspabi_slll_2                        
-00013d02  __mspabi_slll_1                        
-00013d08  __mspabi_srll_15                       
-00013d0c  __mspabi_srll_14                       
-00013d10  __mspabi_srll_13                       
-00013d14  __mspabi_srll_12                       
-00013d18  __mspabi_srll_11                       
-00013d1c  __mspabi_srll_10                       
-00013d20  __mspabi_srll_9                        
-00013d24  __mspabi_srll_8                        
-00013d28  __mspabi_srll_7                        
-00013d2c  __mspabi_srll_6                        
-00013d30  __mspabi_srll_5                        
-00013d34  __mspabi_srll_4                        
-00013d38  __mspabi_srll_3                        
-00013d3c  __mspabi_srll_2                        
-00013d40  __mspabi_srll_1                        
-00013d46  SX1276StartCad                         
-00013d7e  delay_ms                               
-00013db6  __TI_writemsg                          
-00013de8  C$$IO$$                                
-00013dec  crc8_check                             
-00013e22  SX1276ReceivePayload                   
-00013e56  SX1276SetMaxPayloadLength              
-00013e8a  __TI_readmsg                           
-00013ebc  __mspabi_subd                          
-00013eee  delay_us                               
-00013f20  uart_write                             
-00013f52  GPIO_getInterruptStatus                
-00013f82  GPIO_selectInterruptEdge               
-00013fb0  __mspabi_negd                          
-00013fde  CS_getSMCLK                            
+00010466  task_lora_test                         
+000108c8  SX1276SetTxConfig                      
+00010cfe  SX1276SetRxConfig                      
+000110bc  SX1276SetRx                            
+00011436  SX1276GetTimeOnAir                     
+00011762  __mspabi_addd                          
+00011a42  __TI_frcmpyd                           
+00011cc2  __mspabi_mpyd                          
+00011f28  __TI_frcaddd                           
+00012170  BoardIoInit                            
+00012392  __mspabi_divd                          
+000125b4  ceil                                   
+000125b4  ceill                                  
+0001277a  floor                                  
+0001277a  floorl                                 
+00012aba  CS_setDCOFreq                          
+00012bfa  round                                  
+00012bfa  roundl                                 
+00012ebe  __mspabi_cmpd                          
+00012f96  __TI_renormd                           
+00013048  ClockSet                               
+000130f0  __mspabi_fltlid                        
+0001318e  EUSCI_A_UART_init                      
+00013228  SpiInit                                
+000132b4  __mspabi_fltuld                        
+00013334  Timer_A_initUpMode                     
+000133b0  __TI_decompress_lzss                   
+00013426  initUART                               
+0001349a  SX1276SetModem                         
+0001350c  SX1276Send                             
+0001357c  CS_initClockSignal                     
+00013650  __mspabi_fixdul                        
+000136b8  ClockInit                              
+0001371c  SX1276Init                             
+0001377e  GpioSetInterrupt                       
+000137d8  SX1276Random                           
+00013832  __mspabi_divul                         
+00013832  __mspabi_remul                         
+0001388a  EUSCI_B_SPI_initMaster                 
+000138e0  SX1276SetChannel                       
+00013934  __TI_auto_init_nobinit_nopinit_hold_wdt
+00013988  timerinitial                           
+000139dc  SX1276ReadRssi                         
+00013a2c  GPIO_setAsInputPinWithPullDownResistor 
+00013a76  SX1276ReadBuffer                       
+00013ac0  GpioInit                               
+00013b08  SX1276WriteBuffer                      
+00013b4e  SX1276SetTx                            
+00013b90  __mspabi_divli                         
+00013b90  __mspabi_remli                         
+00013bd0  SX1276IsChannelFree                    
+00013c0e  __mspabi_sral_15                       
+00013c12  __mspabi_sral_14                       
+00013c16  __mspabi_sral_13                       
+00013c1a  __mspabi_sral_12                       
+00013c1e  __mspabi_sral_11                       
+00013c22  __mspabi_sral_10                       
+00013c26  __mspabi_sral_9                        
+00013c2a  __mspabi_sral_8                        
+00013c2e  __mspabi_sral_7                        
+00013c32  __mspabi_sral_6                        
+00013c36  __mspabi_sral_5                        
+00013c3a  __mspabi_sral_4                        
+00013c3e  __mspabi_sral_3                        
+00013c42  __mspabi_sral_2                        
+00013c46  __mspabi_sral_1                        
+00013c4c  __mspabi_slll_15                       
+00013c50  __mspabi_slll_14                       
+00013c54  __mspabi_slll_13                       
+00013c58  __mspabi_slll_12                       
+00013c5c  __mspabi_slll_11                       
+00013c60  __mspabi_slll_10                       
+00013c64  __mspabi_slll_9                        
+00013c68  __mspabi_slll_8                        
+00013c6c  __mspabi_slll_7                        
+00013c70  __mspabi_slll_6                        
+00013c74  __mspabi_slll_5                        
+00013c78  __mspabi_slll_4                        
+00013c7c  __mspabi_slll_3                        
+00013c80  __mspabi_slll_2                        
+00013c84  __mspabi_slll_1                        
+00013c8a  __mspabi_srll_15                       
+00013c8e  __mspabi_srll_14                       
+00013c92  __mspabi_srll_13                       
+00013c96  __mspabi_srll_12                       
+00013c9a  __mspabi_srll_11                       
+00013c9e  __mspabi_srll_10                       
+00013ca2  __mspabi_srll_9                        
+00013ca6  __mspabi_srll_8                        
+00013caa  __mspabi_srll_7                        
+00013cae  __mspabi_srll_6                        
+00013cb2  __mspabi_srll_5                        
+00013cb6  __mspabi_srll_4                        
+00013cba  __mspabi_srll_3                        
+00013cbe  __mspabi_srll_2                        
+00013cc2  __mspabi_srll_1                        
+00013cc8  SX1276StartCad                         
+00013d00  delay_ms                               
+00013d38  crc8_check                             
+00013d6e  GPIO_setAsOutputPin                    
+00013da2  SX1276ReceivePayload                   
+00013dd6  SX1276SetMaxPayloadLength              
+00013e0a  __mspabi_subd                          
+00013e3c  delay_us                               
+00013e6e  uart_write                             
+00013ea0  GPIO_getInterruptStatus                
+00013ed0  GPIO_selectInterruptEdge               
+00013efe  __mspabi_negd                          
+00013f2c  crc8                                   
+00013f5a  __mpu_init                             
+00013f86  __mspabi_divi                          
+00013f86  __mspabi_remi                          
+00013fb2  SX1276Reset                            
+00013fda  CS_getACLK                             
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
 ffffffff  __c_args__                             
 
-[1036 symbols]
+[1028 symbols]

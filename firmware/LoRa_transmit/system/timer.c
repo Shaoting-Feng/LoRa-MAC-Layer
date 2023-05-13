@@ -32,6 +32,18 @@ void settimer(void)
     timerstart = 1;
     timeout_flag = 0;
     uart_write("Timer Start!\n");
+    //TransmitCnt = 0;
+}
+
+void settimer2(void)
+{
+    timerstart2 = 1;
+    uart_write("Timer Start Again!\n");
+}
+
+void closetimer(void)
+{
+    timerstart = 0;
 }
 
 #pragma vector=TIMER0_A0_VECTOR
@@ -40,28 +52,51 @@ __interrupt void TIMER0_A0_ISR (void)
     static uint16_t TimerCnt = 0;
     static uint16_t TransmitCnt = 0;
 
+    static uint16_t TimerCnt2 = 0;
+
     if (timerstart == 1) {  
         TimerCnt ++;
-        if (TimerCnt >= 1000) {
+        if (TimerCnt >= 5000) {
             TimerCnt = 0;
             //timeout_flag = 1;
 
             // added by Shaoting
-            if (TransmitCnt < 10){
+            if (TransmitCnt < 3) {
                 if (MCU_State == MCU_STATE_BR_RX_WAIT) {
                     uart_write("Time Out!\n");
                     TransmitCnt ++;
                     MCU_State = MCU_STATE_BR_TX_INIT;
                 }
+                else {
+                    TransmitCnt = 0;
+                }
             }
             else {
-                TransmitCnt = 0;
-                MCU_State = MCU_STATE_BR_TX_INIT;
+                if (MCU_State == MCU_STATE_BR_RX_WAIT) {
+                    TransmitCnt = 0;
+                    MCU_State = MCU_STATE_UART_WAIT;
+                }
+                else {
+                    TransmitCnt = 0;
+                }
             }
             timerstart = 0; 
         }
     }
     else {
         TimerCnt = 0;
+    }
+
+    if (timerstart2 == 1) {  
+        TimerCnt2 ++;
+        if (TimerCnt2 >= 5000) {
+            TimerCnt2 = 0;
+            timerstart2 = 0;
+            MCU_State = MCU_STATE_UART_WAIT;
+            uart_write("Time Out For Broadcast!\n");
+        }
+    }
+    else {
+        TimerCnt2 = 0;
     }
 }

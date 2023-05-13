@@ -51,6 +51,9 @@ RadioEvents_t sx1276 =
 #define LORA_IQ_INVERSION               false
 #define TX_OUTPUT_POWER                 0
 
+// added by Shaoting
+#define TAG_ID			                1
+
 uint8_t packet_size = 0;
 static uint8_t BR_buffer[RFLR_PAYLOADMAXLENGTH];
 
@@ -60,6 +63,7 @@ extern uint8_t transmit_cnt_2;
 bool sleep_flag;
 bool done_flag;
 extern int tag;
+bool broadcast_flag;
 
 uint8_t send_buffer[2];
 
@@ -117,11 +121,18 @@ void task_lora_test(void)
 
     uint8_t irqFlags;
 
-    uart_write("Everything is ready!\n");
-
     // added by Shaoting
     sleep_flag = false;
     done_flag = false;
+    broadcast_flag = false;
+
+    // added by Shaoting 05.05
+    GPIO_setAsOutputPin(GPIO_PORT_P3,GPIO_PIN0);
+    GPIO_setAsOutputPin(GPIO_PORT_P3,GPIO_PIN1);
+
+    set_tag(TAG_ID);
+
+    uart_write("Everything is ready!\n");
 
     while(1)
     {
@@ -160,6 +171,11 @@ void task_lora_test(void)
                 sx1276Radio.Rx(RX_TIMEOUT_VALUE);
 
                 MCU_State = MCU_STATE_BR_RX_WAIT;
+
+                // added by Shaoting 05.05
+                GPIO_setOutputHighOnPin(GPIO_PORT_P3,GPIO_PIN0);
+                GPIO_setOutputLowOnPin(GPIO_PORT_P3,GPIO_PIN1);
+
                 break;
             }
         case MCU_STATE_BR_RX_WAIT:
@@ -168,105 +184,88 @@ void task_lora_test(void)
                 settimer_sleep();
                 break;
             }
-        case MCU_STATE_BR_RX:
-            {
-                irqFlags = SX1276Read(REG_LR_IRQFLAGS);
-
-                SX1276Write(RegFifoAddrPtr, SX1276Read(RegFifoRxCurrentAddr));
-                packet_size = SX1276ReceivePayload(BR_buffer);
-
-                // deleted by Shaoting
-                // uart_write("Already received!\n");
-                // uart_printNum(irqFlags);
-
-                if((irqFlags & RFLR_IRQFLAGS_PAYLOADCRCERROR_MASK) != RFLR_IRQFLAGS_PAYLOADCRCERROR)
-                {
-                    // deleted by Shaoting
-                    // uart_write("Correctly received!\n");
-
-                    // added by Shaoting
-                    uart_write("Received a packet.\n");
-
-                    if (crc8_check(BR_buffer, 16)) {
-                        uart_write("CRC checked correctly.\n");
-                        GpioWrite(&SD_PHY.FPGA.DATA, 0);
-                        uint8_t tmp;
-                        int i,j;
-
-                        // added by Shaoting
-                        if (BR_buffer[0] == 0x04 + tag * 0x10) { // normal transmission
-
-                            for (i = 1; i <= 14; i++) { // 渚濇妫�鏌ユ瘡涓�瀛�?�妭锛屼篃灏辨槸BR_buffer�?�?1-14椤癸紝鍥犱负绗�0椤�?�槸璁剧疆濂界殑
-                                tmp = BIT7;
-                                for (j = 0; j < 8; ++j) { // 渚濇妫�鏌ユ瘡涓�椤圭�?8涓猙it
-                                    // 鍦⊿D_PHY.FPGA.DATA閲岄潰渚濇鍐�14*8涓�1鎴栬��0
-                                    // 鏍�?�嵁domain6锛�?�reamble鍗�3涓瓧鑺傦紝id鍗�2涓瓧鑺傦紝type鍗�0.5涓瓧鑺傦紝鍓╀笅鐨�?槸ramdata
-                                    if (BR_buffer[i] & tmp) {
-                                        GpioWrite(&SD_PHY.FPGA.DATA, 1);
-                                    } else {
-                                        GpioWrite(&SD_PHY.FPGA.DATA, 0);
-                                    }
-                                    delay_us(50);
-                                    GpioWrite(&SD_PHY.FPGA.CLK, 1);
-                                    delay_us(100);
-                                    GpioWrite(&SD_PHY.FPGA.CLK, 0);
-                                    delay_us(50);
-                                    tmp = tmp >> 1;
-                                }
-                            }
-                            GpioWrite(&SD_PHY.FPGA.DATA, 0);
-                            for (i = 14; i <= 107; i++) {
-                                for (j = 0; j < 8; ++j) {
-                                    delay_us(50);
-                                    GpioWrite(&SD_PHY.FPGA.CLK, 1);
-                                    delay_us(100);
-                                    GpioWrite(&SD_PHY.FPGA.CLK, 0);
-                                    delay_us(50);
-                                }
-                            }
-
-                            ACK_Configure(1);
-                            MCU_State = MCU_STATE_BR_TX_INIT_2;
-                        }
-                        else if (BR_buffer[0] == 0x00 + tag * 0x10) { // go to sleep
-                            ACK_Configure(0);
-                            sleep_flag = true;
-                            settimer_wait();
-
-                            // deleted by Shaoting
-                            // SetSwitchMode(SDPHY_MODE);
-                        }
-                        else if (BR_buffer[0] == 0x08 || BR_buffer[0] == 0x18 || BR_buffer[0] == 0x28
-                                || BR_buffer[0] == 0x38 || BR_buffer[0] == 0x48 || BR_buffer[0] == 0x58
-                                || BR_buffer[0] == 0x68 || BR_buffer[0] == 0x78 || BR_buffer[0] == 0x88
-                                || BR_buffer[0] == 0x98 || BR_buffer[0] == 0xA8 || BR_buffer[0] == 0xB8
-                                || BR_buffer[0] == 0xC8 || BR_buffer[0] == 0xD8 || BR_buffer[0] == 0xE8) 
-                        { // broadcast
-                            ACK_Configure(2);
-                            MCU_State = MCU_STATE_BR_TX_INIT_2;
-                        }
-                        else {
-                            MCU_State = MCU_STATE_BR_RX_INIT;
-                        }
-                    }
-                    else {
-                        MCU_State = MCU_STATE_BR_RX_INIT;
-                        uart_write("CRC checked incorrectly.\n");
-                    }
-
-                    // deleted by Shaoting
-                    // SX1276SetIRQFlagMask(RFLR_IRQFLAGS_PAYLOADCRCERROR_MASK + RFLR_IRQFLAGS_RXDONE_MASK);
-                    // MCU_State = MCU_STATE_BR_RX_INIT;
-                    // break;
-                }
-                SX1276SetIRQFlagMask(RFLR_IRQFLAGS_PAYLOADCRCERROR_MASK + RFLR_IRQFLAGS_RXDONE_MASK);
-                break;
+        case MCU_STATE_BR_RX: {
+        	if (!broadcast_flag) {
+				irqFlags = SX1276Read(REG_LR_IRQFLAGS);
+				SX1276Write(RegFifoAddrPtr, SX1276Read(RegFifoRxCurrentAddr));
+				packet_size = SX1276ReceivePayload(BR_buffer);
+				if((irqFlags & RFLR_IRQFLAGS_PAYLOADCRCERROR_MASK) != RFLR_IRQFLAGS_PAYLOADCRCERROR) {
+					//uart_write("Received a packet.\n");
+					if (crc8_check(BR_buffer, 16)) {
+						//uart_write("CRC checked correctly.\n");
+						GpioWrite(&SD_PHY.FPGA.DATA, 0);
+						uint8_t tmp;
+						int i,j;
+						if (BR_buffer[0] == 0x04 + tag * 0x10) { // normal transmission
+							uart_write("Correct CRC for normal transmission.\n");
+							for (i = 1; i <= 14; i++) { // 渚濇妫�鏌ユ瘡涓�瀛�?�妭锛屼篃灏辨槸BR_buffer�?�?1-14椤癸紝鍥犱负绗�0椤�?�槸璁剧疆濂界殑
+								tmp = BIT7;
+								for (j = 0; j < 8; ++j) { // 渚濇妫�鏌ユ瘡涓�椤圭�?8涓猙it
+									if (BR_buffer[i] & tmp) {
+										GpioWrite(&SD_PHY.FPGA.DATA, 1);
+									}
+									else {
+										GpioWrite(&SD_PHY.FPGA.DATA, 0);
+									}
+									delay_us(50);
+									GpioWrite(&SD_PHY.FPGA.CLK, 1);
+									delay_us(100);
+									GpioWrite(&SD_PHY.FPGA.CLK, 0);
+									delay_us(50);
+									tmp = tmp >> 1;
+								}
+							}
+							GpioWrite(&SD_PHY.FPGA.DATA, 0);
+							for (i = 14; i <= 107; i++) {
+								for (j = 0; j < 8; ++j) {
+									delay_us(50);
+									GpioWrite(&SD_PHY.FPGA.CLK, 1);
+									delay_us(100);
+									GpioWrite(&SD_PHY.FPGA.CLK, 0);
+									delay_us(50);
+								}
+							}
+							ACK_Configure(1);
+							MCU_State = MCU_STATE_BR_TX_INIT_2;
+						}
+						else if (BR_buffer[0] == 0x00 + tag * 0x10) { // go to sleep
+							uart_write("Correct CRC for sleeping.\n");
+							ACK_Configure(0);
+							sleep_flag = true;
+							MCU_State = MCU_STATE_BR_TX_INIT_2;
+						}
+						else if (BR_buffer[0] == 0x08 || BR_buffer[0] == 0x18 || BR_buffer[0] == 0x28
+								|| BR_buffer[0] == 0x38 || BR_buffer[0] == 0x48 || BR_buffer[0] == 0x58
+								|| BR_buffer[0] == 0x68 || BR_buffer[0] == 0x78 || BR_buffer[0] == 0x88
+								|| BR_buffer[0] == 0x98 || BR_buffer[0] == 0xA8 || BR_buffer[0] == 0xB8
+								|| BR_buffer[0] == 0xC8 || BR_buffer[0] == 0xD8 || BR_buffer[0] == 0xE8)
+						{ // broadcast
+							uart_write("Correct CRC for broadcast.\n");
+							ACK_Configure(2);
+							broadcast_flag = true;
+							settimer_wait();
+							//delay_us(2000000000);
+							//MCU_State = MCU_STATE_BR_TX_INIT_2;
+						}
+						else {
+							MCU_State = MCU_STATE_BR_RX_INIT;
+						}
+					}
+					else {
+						MCU_State = MCU_STATE_BR_RX_INIT;
+						uart_write("CRC checked incorrectly.\n");
+					}
+				}
+				SX1276SetIRQFlagMask(RFLR_IRQFLAGS_PAYLOADCRCERROR_MASK + RFLR_IRQFLAGS_RXDONE_MASK);
+			}
+        	break;
         }
 
         // added by Shaoting
         // 涓烘敹绔坊鍔犫�滃彂閫佲�濈姸�?�?
         case MCU_STATE_BR_TX_INIT_2:
             {
+            	broadcast_flag = false;
                 SX1276SetIRQFlagMask(RFLR_IRQFLAGS_TXDONE_MASK);
                 // 璁剧疆SX1276鏃犵嚎鏀跺彂鑺墖鐨�?腑鏂爣蹇椾綅鎺╃爜锛圛RQ Flag Mask锛�?�负鍙戦�佸�?鎴愶紙TXDONE锛�?�爣蹇椾綅鎺╃爜
                 // 浠ヤ究灞忚斀闄や簡鍙戦�佸畬鎴愭爣蹇椾綅浠ュ鐨�?叾浠栨�?�鏈変腑鏂�傝繖鏄负浜嗛槻�?�㈠�?鏁版嵁鍙戦�佹湡闂村彂鐢熷叾浠栦腑鏂�屽�?�鍝嶆暟鎹紶杈撶殑瀹屾暣鎬�?
@@ -283,6 +282,11 @@ void task_lora_test(void)
                 // 鍦ㄨ皟鐢⊿X1276Send鍑芥暟鍚�?紝鍙戦�佺殑鏁版嵁琚啓鍏X1276鑺墖鐨�?IFO瀵勫瓨鍣ㄤ腑锛屽悓鏃禨X1276鑺墖鐨�?IFO鎸囬拡涔熸寚鍚戜簡鍙戦�佹暟鎹殑鏈熬銆�
                 // 涓轰簡纭繚鍙戦�佸�?鎴愬悗鑳藉姝ｅ父鎺ユ敹鏁版嵁锛岄渶瑕佸�?FIFO鎸囬拡閲嶆柊鎸囧悜鎺ユ敹鏁版嵁鐨�?捣濮嬩綅缃��
                 // 鍥犳锛岃繖鏉rite璇彞灏辨槸灏咶IFO鎸囬拡閲嶆柊鎸囧悜RegFifoRxCurrentAddr鐨勪綅缃紝浠ヤ究鎺ユ敹鏁版嵁銆�?
+
+                // added by Shaoting 05.05
+                GPIO_setOutputHighOnPin(GPIO_PORT_P3,GPIO_PIN0);
+                GPIO_setOutputHighOnPin(GPIO_PORT_P3,GPIO_PIN1);
+
                 break;
             }
         case MCU_STATE_BR_TX_WAIT_2:
@@ -296,8 +300,12 @@ void task_lora_test(void)
                     done_flag = true;
                     uart_write("I am going to sleep permanently.\n");
                     GpioWrite(&SD_PHY.LED_D1, 0);
+
+                    // added by Shaoting 05.05
+                    GPIO_setOutputLowOnPin(GPIO_PORT_P3,GPIO_PIN0);
+                    GPIO_setOutputLowOnPin(GPIO_PORT_P3,GPIO_PIN1);
+
                     __bis_SR_register(LPM4_bits);
-                    uart_write("test\n");
                 }
                 MCU_State = MCU_STATE_BR_RX_INIT;
                 break;

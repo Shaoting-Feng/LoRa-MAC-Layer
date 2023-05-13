@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := D:/CCS/Install/ccs/tools/compiler/ti-cgt-msp430_20.2.2.LTS
+CG_TOOL_ROOT := F:/ccs/ccs/ccs/tools/compiler/ti-cgt-msp430_20.2.2.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -51,6 +51,7 @@ ORDERED_OBJS += \
 "./system/ack.obj" \
 "./system/board.obj" \
 "./system/clock.obj" \
+"./system/crc.obj" \
 "./system/gpio.obj" \
 "./system/spi.obj" \
 "./system/timer.obj" \
@@ -197,14 +198,14 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 SD_PHY.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: MSP430 Linker'
-	"D:/CCS/Install/ccs/tools/compiler/ti-cgt-msp430_20.2.2.LTS/bin/cl430" -vmspx --data_model=restricted -O2 --use_hw_mpy=F5 --advice:power="none" --advice:hw_config=all --define=__MSP430FR5969__ --define=_MPU_ENABLE --define=DEPRECATED --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"SD_PHY.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"D:/CCS/Install/ccs/ccs_base/msp430/include" -i"D:/CCS/Install/ccs/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"D:/CCS/Install/ccs/ccs_base/msp430/lib/FR59xx" -i"D:/CCS/Install/ccs/tools/compiler/ti-cgt-msp430_20.2.2.LTS/lib" -i"D:/CCS/Install/ccs/tools/compiler/ti-cgt-msp430_20.2.2.LTS/include" --priority --reread_libs --define=_MPU_ENABLE --diag_wrap=off --display_error_number --warn_sections --xml_link_info="SD_PHY_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "SD_PHY.out" $(ORDERED_OBJS)
+	"F:/ccs/ccs/ccs/tools/compiler/ti-cgt-msp430_20.2.2.LTS/bin/cl430" -vmspx --data_model=restricted -O2 --use_hw_mpy=F5 --advice:power="none" --advice:hw_config=all --define=__MSP430FR5969__ --define=_MPU_ENABLE --define=DEPRECATED --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"SD_PHY.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"F:/ccs/ccs/ccs/ccs_base/msp430/include" -i"F:/ccs/ccs/ccs/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"F:/ccs/ccs/ccs/ccs_base/msp430/lib/FR59xx" -i"F:/ccs/ccs/ccs/tools/compiler/ti-cgt-msp430_20.2.2.LTS/lib" -i"F:/ccs/ccs/ccs/tools/compiler/ti-cgt-msp430_20.2.2.LTS/include" --priority --reread_libs --define=_MPU_ENABLE --diag_wrap=off --display_error_number --warn_sections --xml_link_info="SD_PHY_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "SD_PHY.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 SD_PHY.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: MSP430 Hex Utility'
-	"D:/CCS/Install/ccs/tools/compiler/ti-cgt-msp430_20.2.2.LTS/bin/hex430" --memwidth=8 --romwidth=8 --diag_wrap=off -o "SD_PHY.hex" $(EXE_OUTPUTS__QUOTED)
+	"F:/ccs/ccs/ccs/tools/compiler/ti-cgt-msp430_20.2.2.LTS/bin/hex430" --memwidth=8 --romwidth=8 --diag_wrap=off -o "SD_PHY.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 
@@ -212,9 +213,9 @@ SD_PHY.hex: $(EXE_OUTPUTS)
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
 	-$(RM) "main.obj" "app\tasks.obj" "driverlib\MSP430FR5xx_6xx\adc12_b.obj" "driverlib\MSP430FR5xx_6xx\aes256.obj" "driverlib\MSP430FR5xx_6xx\comp_e.obj" "driverlib\MSP430FR5xx_6xx\crc.obj" "driverlib\MSP430FR5xx_6xx\crc32.obj" "driverlib\MSP430FR5xx_6xx\cs.obj" "driverlib\MSP430FR5xx_6xx\dma.obj" "driverlib\MSP430FR5xx_6xx\esi.obj" "driverlib\MSP430FR5xx_6xx\eusci_a_spi.obj" "driverlib\MSP430FR5xx_6xx\eusci_a_uart.obj" "driverlib\MSP430FR5xx_6xx\eusci_b_i2c.obj" "driverlib\MSP430FR5xx_6xx\eusci_b_spi.obj" "driverlib\MSP430FR5xx_6xx\framctl.obj" "driverlib\MSP430FR5xx_6xx\framctl_a.obj" "driverlib\MSP430FR5xx_6xx\gpio.obj" "driverlib\MSP430FR5xx_6xx\hspll.obj" "driverlib\MSP430FR5xx_6xx\lcd_c.obj" "driverlib\MSP430FR5xx_6xx\mpu.obj" "driverlib\MSP430FR5xx_6xx\mpy32.obj" "driverlib\MSP430FR5xx_6xx\mtif.obj" "driverlib\MSP430FR5xx_6xx\pmm.obj" "driverlib\MSP430FR5xx_6xx\ram.obj" "driverlib\MSP430FR5xx_6xx\ref_a.obj" "driverlib\MSP430FR5xx_6xx\rtc_b.obj" "driverlib\MSP430FR5xx_6xx\rtc_c.obj" "driverlib\MSP430FR5xx_6xx\saph.obj" 
-	-$(RM) "driverlib\MSP430FR5xx_6xx\saph_a.obj" "driverlib\MSP430FR5xx_6xx\sdhs.obj" "driverlib\MSP430FR5xx_6xx\sfr.obj" "driverlib\MSP430FR5xx_6xx\sysctl.obj" "driverlib\MSP430FR5xx_6xx\timer_a.obj" "driverlib\MSP430FR5xx_6xx\timer_b.obj" "driverlib\MSP430FR5xx_6xx\tlv.obj" "driverlib\MSP430FR5xx_6xx\uups.obj" "driverlib\MSP430FR5xx_6xx\wdt_a.obj" "sx1276\sx1276.obj" "system\ack.obj" "system\board.obj" "system\clock.obj" "system\gpio.obj" "system\spi.obj" "system\timer.obj" "system\uart.obj" "utils\utils.obj" 
+	-$(RM) "driverlib\MSP430FR5xx_6xx\saph_a.obj" "driverlib\MSP430FR5xx_6xx\sdhs.obj" "driverlib\MSP430FR5xx_6xx\sfr.obj" "driverlib\MSP430FR5xx_6xx\sysctl.obj" "driverlib\MSP430FR5xx_6xx\timer_a.obj" "driverlib\MSP430FR5xx_6xx\timer_b.obj" "driverlib\MSP430FR5xx_6xx\tlv.obj" "driverlib\MSP430FR5xx_6xx\uups.obj" "driverlib\MSP430FR5xx_6xx\wdt_a.obj" "sx1276\sx1276.obj" "system\ack.obj" "system\board.obj" "system\clock.obj" "system\crc.obj" "system\gpio.obj" "system\spi.obj" "system\timer.obj" "system\uart.obj" "utils\utils.obj" 
 	-$(RM) "main.d" "app\tasks.d" "driverlib\MSP430FR5xx_6xx\adc12_b.d" "driverlib\MSP430FR5xx_6xx\aes256.d" "driverlib\MSP430FR5xx_6xx\comp_e.d" "driverlib\MSP430FR5xx_6xx\crc.d" "driverlib\MSP430FR5xx_6xx\crc32.d" "driverlib\MSP430FR5xx_6xx\cs.d" "driverlib\MSP430FR5xx_6xx\dma.d" "driverlib\MSP430FR5xx_6xx\esi.d" "driverlib\MSP430FR5xx_6xx\eusci_a_spi.d" "driverlib\MSP430FR5xx_6xx\eusci_a_uart.d" "driverlib\MSP430FR5xx_6xx\eusci_b_i2c.d" "driverlib\MSP430FR5xx_6xx\eusci_b_spi.d" "driverlib\MSP430FR5xx_6xx\framctl.d" "driverlib\MSP430FR5xx_6xx\framctl_a.d" "driverlib\MSP430FR5xx_6xx\gpio.d" "driverlib\MSP430FR5xx_6xx\hspll.d" "driverlib\MSP430FR5xx_6xx\lcd_c.d" "driverlib\MSP430FR5xx_6xx\mpu.d" "driverlib\MSP430FR5xx_6xx\mpy32.d" "driverlib\MSP430FR5xx_6xx\mtif.d" "driverlib\MSP430FR5xx_6xx\pmm.d" "driverlib\MSP430FR5xx_6xx\ram.d" "driverlib\MSP430FR5xx_6xx\ref_a.d" "driverlib\MSP430FR5xx_6xx\rtc_b.d" "driverlib\MSP430FR5xx_6xx\rtc_c.d" "driverlib\MSP430FR5xx_6xx\saph.d" "driverlib\MSP430FR5xx_6xx\saph_a.d" 
-	-$(RM) "driverlib\MSP430FR5xx_6xx\sdhs.d" "driverlib\MSP430FR5xx_6xx\sfr.d" "driverlib\MSP430FR5xx_6xx\sysctl.d" "driverlib\MSP430FR5xx_6xx\timer_a.d" "driverlib\MSP430FR5xx_6xx\timer_b.d" "driverlib\MSP430FR5xx_6xx\tlv.d" "driverlib\MSP430FR5xx_6xx\uups.d" "driverlib\MSP430FR5xx_6xx\wdt_a.d" "sx1276\sx1276.d" "system\ack.d" "system\board.d" "system\clock.d" "system\gpio.d" "system\spi.d" "system\timer.d" "system\uart.d" "utils\utils.d" 
+	-$(RM) "driverlib\MSP430FR5xx_6xx\sdhs.d" "driverlib\MSP430FR5xx_6xx\sfr.d" "driverlib\MSP430FR5xx_6xx\sysctl.d" "driverlib\MSP430FR5xx_6xx\timer_a.d" "driverlib\MSP430FR5xx_6xx\timer_b.d" "driverlib\MSP430FR5xx_6xx\tlv.d" "driverlib\MSP430FR5xx_6xx\uups.d" "driverlib\MSP430FR5xx_6xx\wdt_a.d" "sx1276\sx1276.d" "system\ack.d" "system\board.d" "system\clock.d" "system\crc.d" "system\gpio.d" "system\spi.d" "system\timer.d" "system\uart.d" "utils\utils.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

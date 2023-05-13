@@ -19,6 +19,7 @@
 
 extern bool sleep_flag;
 extern bool done_flag;
+extern int tag;
 
 
 void timerinitial(void)
@@ -36,6 +37,9 @@ void timerinitial(void)
 
     // added by Shaoting
     duty_flag = false;
+    timerstart_sleep = 0;
+    timerstart_wait = 0;
+    RandomCnt = 0;
 }
 
 void settimer_sleep(void)
@@ -50,8 +54,13 @@ void settimer_sleep(void)
 void settimer_wait(void)
 {
     timerstart_wait = 1;
+    uart_write("Timer start.\n");
+    /*
     srand(time(0));
-    random_num = rand() % 1001; // 0 to 1s
+    */
+
+    random_num = RandomCnt;
+
 }
 
 void endtimer_sleep(void)
@@ -60,7 +69,7 @@ void endtimer_sleep(void)
         /*
         __bic_SR_register_on_exit(LPM4_bits);
         */
-        uart_write("I have waken up.\n");
+        //uart_write("I have waken up.\n");
         GpioWrite(&SD_PHY.LED_D1, 1);
         duty_flag = false;
     }
@@ -71,7 +80,13 @@ void endtimer_sleep(void)
 #pragma vector=TIMER0_A0_VECTOR
 __interrupt void TIMER0_A0_ISR (void)
 {
-    // uart_write("test\n");
+    RandomCnt ++;
+    if (RandomCnt > 1000) {
+        RandomCnt = 0;
+    }
+
+    // uart_write(char*(MCU_State));
+    // uart_write("1");
 
     if (timerstart_sleep == 1 && sleep_flag && done_flag) {
         uart_write("Oops.\n");
@@ -81,22 +96,23 @@ __interrupt void TIMER0_A0_ISR (void)
 
     static uint16_t TimerCnt = 0;
 
+    // uart_printNum(TimerCnt);
+
     if (timerstart_sleep == 1) {  
         TimerCnt ++;
-        // uart_printNum(TimerCnt);
         if (TimerCnt >= 3000) { // go to sleep after 3s without actions
             TimerCnt = 0;
 
             // added by Shaoting
             if (!duty_flag) {
-                uart_write("I am going to bed.\n");
+                //uart_write("I am going to bed.\n");
                 GpioWrite(&SD_PHY.LED_D1, 0);
                 duty_flag = true;
                 __bis_SR_register(LPM4_bits + GIE);
             }
             else {
                 __bic_SR_register_on_exit(LPM4_bits);
-                uart_write("I have waken up.\n");
+                //uart_write("I have waken up.\n");
                 GpioWrite(&SD_PHY.LED_D1, 1);
                 duty_flag = false;
             }
@@ -110,13 +126,12 @@ __interrupt void TIMER0_A0_ISR (void)
     static uint16_t TimerCnt_wait = 0;
 
     if (timerstart_wait == 1) {  
-        TimerCnt_wait ++;
-        if (TimerCnt_wait >= random_num) { 
+        //uart_write("test\n");
+        TimerCnt_wait++;
+        if (TimerCnt_wait >= tag * 3000 - 1000 * (tag-1)) {
             TimerCnt_wait = 0;
             if (MCU_State == MCU_STATE_BR_RX) {
-                uart_write("I have delayed \n");
-                uart_printNum(random_num % 1000);
-                uart_write(" \n");
+                uart_write("I have delayed.\n");
                 MCU_State = MCU_STATE_BR_TX_INIT_2;
                 TimerCnt_wait = 0;
                 timerstart_wait = 0;

@@ -2,11 +2,17 @@
 #ifndef _SYSTEM_TIMER_H_
 #define _SYSTEM_TIMER_H_
 
+#include <stdint.h>
+#include <stdio.h>
+#include <stdbool.h>
+
 bool timeout_flag;
 bool timerstart_sleep;
 bool timerstart_wait;
 bool duty_flag;
-int random_num;
+
+uint16_t random_num;
+uint16_t RandomCnt;
 
 /**#######################External functions######################**/
 void timerinitial(void);

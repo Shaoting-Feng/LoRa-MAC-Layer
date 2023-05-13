@@ -9,6 +9,7 @@ C_SRCS += \
 ../system/ack.c \
 ../system/board.c \
 ../system/clock.c \
+../system/crc.c \
 ../system/gpio.c \
 ../system/spi.c \
 ../system/timer.c \
@@ -18,6 +19,7 @@ C_DEPS += \
 ./system/ack.d \
 ./system/board.d \
 ./system/clock.d \
+./system/crc.d \
 ./system/gpio.d \
 ./system/spi.d \
 ./system/timer.d \
@@ -27,6 +29,7 @@ OBJS += \
 ./system/ack.obj \
 ./system/board.obj \
 ./system/clock.obj \
+./system/crc.obj \
 ./system/gpio.obj \
 ./system/spi.obj \
 ./system/timer.obj \
@@ -36,6 +39,7 @@ OBJS__QUOTED += \
 "system\ack.obj" \
 "system\board.obj" \
 "system\clock.obj" \
+"system\crc.obj" \
 "system\gpio.obj" \
 "system\spi.obj" \
 "system\timer.obj" \
@@ -45,6 +49,7 @@ C_DEPS__QUOTED += \
 "system\ack.d" \
 "system\board.d" \
 "system\clock.d" \
+"system\crc.d" \
 "system\gpio.d" \
 "system\spi.d" \
 "system\timer.d" \
@@ -54,6 +59,7 @@ C_SRCS__QUOTED += \
 "../system/ack.c" \
 "../system/board.c" \
 "../system/clock.c" \
+"../system/crc.c" \
 "../system/gpio.c" \
 "../system/spi.c" \
 "../system/timer.c" \

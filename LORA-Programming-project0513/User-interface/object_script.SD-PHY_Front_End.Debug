@@ -1,0 +1,17 @@
+INPUT(
+./debug\main.o
+./debug\dialog.o
+./debug\domain6.o
+./debug\domain10.o
+./debug\domain11.o
+./debug\domain12.o
+./debug\domain13.o
+./debug\domain14.o
+./debug\moc_dialog.o
+./debug\moc_domain6.o
+./debug\moc_domain10.o
+./debug\moc_domain11.o
+./debug\moc_domain12.o
+./debug\moc_domain13.o
+./debug\moc_domain14.o
+);

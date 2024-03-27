@@ -1,7 +1,51 @@
-# LORA-Programming
+# ⛳ Design of LoRa MAC Layer in Ultra-Low Power SDR
 
-Over-the-air programmability is an important capability for ultra-low power softwaredefined radio nodes, which allows nodes to be free of wired interfaces and accessing to a wired network. And it is critical to achieve the goal of a large-scale wide area test platform. LoRa is an ideal OTA communication protocol for ultra-low power software defined radio nodes due to its advantages of long range, low power consumption and anti-interference. LoRa's PHY layer is fixed, but the MAC layer is open. In order to propagate updates across the test bed or to specific nodes, we need to design a MAC layer for LoRa PHY and implement it on the hardware platform. At the same time, in order to minimize the power consumption of the system, the nodes need to work in intermittent mode. This project studies OTA system implementation of ultra low power software defined radio.
 
-User-interface is the QT interface for receiver. SD_PHY is the MCU codes for receiver. 
 
-original2.3.new is the QT interface for transmitter. LoRa_transmit is the MCU codes for transmitter. 
+## 🎈 Background
+
+LoRa
+- an ideal OTA (over-the-air) communication protocol for SD-PHY (software defined physical layer)
+- long range, low power consumption, and anti-interference
+- fixed PHY layer
+- open MAC layer
+
+
+
+## ✒️ Architecture
+
+We utilize an MCU to control LoRa as its OTA protocol. Specifically, on the transmitter end, we primarily employ an MSP430 development board to control a LoRa (SX1276) development board. They communicate via the SPI bus. Additionally, we have a frontend interface on the computer, developed using the QT framework. It controls the MSP430 development board via UART serial communication. On the receiver end, it also employs an MSP430 development board for control of the LoRa development board, communicating via the SPI bus.
+
+![Diagram](assets/Architecture.png)
+
+
+
+## :beverage_box: Implementation
+
+- Designing LoRa MAC Layer:
+  - Designing frame format for LoRa MAC layer.
+  - Implementing timeout retransmission mechanism.
+  - Adding broadcast capability.
+- Adding duty_cycle for sleep implementation.
+- Designing frontend interface:
+  - Adding control for respective functionalities.
+  - Porting to Linux system.
+  - Beautifying interface.
+- Deploying in conjunction with circuit schematics to software-defined radio hardware platform.
+
+
+
+## :bookmark_tabs: State Machines
+![Diagram](assets/Transmitter.png)
+![Diagram](assets/Receiver.png)
+
+
+## 📖 Instructions
+
+- Transmitter
+  - QT interface: User-interface-transmitter
+  - MCU codes: firmware/LoRa_transmit
+- Receiver
+  - QT interface: User-interface-receiver
+  - MCU codes: firmware/SD_PHY
+
